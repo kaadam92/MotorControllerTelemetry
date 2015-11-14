@@ -21,12 +21,14 @@ SOURCES += main.cpp\
     Communication/Communication.cpp \
     Communication/CommunicationSerialPort.cpp \
     Communication/CommunicationTcpSocket.cpp \
-    Communication/CommunicationTcpSocketServer.cpp
+    Communication/CommunicationTcpSocketServer.cpp \
+    Application.cpp
 
 HEADERS  += mainwindow.h \
     Communication/Communication.h \
     Communication/CommunicationSerialPort.h \
     Communication/CommunicationTcpSocket.h \
-    Communication/CommunicationTcpSocketServer.h
+    Communication/CommunicationTcpSocketServer.h \
+    Application.h
 
 FORMS    += mainwindow.ui
