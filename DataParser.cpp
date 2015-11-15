@@ -53,6 +53,8 @@ void DataParser::dataInput(QDataStream& stream)
     return;
 }
 
+// Test for master branch
+
 void DataParser::PrintDataToDebug()
 {
     QMapIterator<qint16, double> i(dataMap);
