@@ -61,10 +61,22 @@ void DataParser::dataInput(QDataStream& stream)
     return;
 }
 
-//Teszt módosítás
-
 void DataParser::PrintDataToDebug()
 {
+    QMapIterator<quint16, double> i(dataMap);
+    while (i.hasNext())
+    {
+        i.next();
+        qDebug() << i.key() << ": " << i.value() << endl;
+    }
+}
+
+void DataParser::saveDataTimestamp()
+{
+    QDateTime currTime = QDateTime::currentDateTimeUtc();
+    dataTimestamp[currTime] = dataMap;
+
+    qDebug() << currTime.toString("yyyy.MM.dd. hh:mm:ss:zzz");
     QMapIterator<quint16, double> i(dataMap);
     while (i.hasNext())
     {

@@ -36,5 +36,9 @@ public slots:
     /** Ide lehet bekötni a kommunikációs dataReady signalokat.*/
     void dataInput(QDataStream&);
 
+    /** Ide lehet bekötni a timer signalt. Minden egyes híváskor
+     * elmenti új timestampel az adatokat dataTimestamp-be.*/
+    void saveDataTimestamp();
+
 };
 
