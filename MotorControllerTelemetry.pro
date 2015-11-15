@@ -22,13 +22,17 @@ SOURCES += main.cpp\
     Communication/CommunicationSerialPort.cpp \
     Communication/CommunicationTcpSocket.cpp \
     Communication/CommunicationTcpSocketServer.cpp \
-    Application.cpp
+    Application.cpp \
+    Communication/CommunicationTcpSocketClient.cpp \
+    DataParser.cpp
 
 HEADERS  += mainwindow.h \
     Communication/Communication.h \
     Communication/CommunicationSerialPort.h \
     Communication/CommunicationTcpSocket.h \
     Communication/CommunicationTcpSocketServer.h \
-    Application.h
+    Application.h \
+    Communication/CommunicationTcpSocketClient.h \
+    DataParser.h
 
 FORMS    += mainwindow.ui

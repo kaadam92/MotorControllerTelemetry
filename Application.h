@@ -3,8 +3,11 @@
 #define STVAPPLICATION_H
 #include <QApplication>
 #include <QQmlApplicationEngine>
+#include <QString>
+#include <DataParser.h>
 #include "mainwindow.h"
 #include "Communication/CommunicationTcpSocketServer.h"
+#include "Communication/CommunicationTcpSocketClient.h"
 
 /**
  * @brief Alkalmazás osztály. A main() példányosítja és indítja el.
@@ -21,8 +24,12 @@ public:
 private:
     QQmlApplicationEngine engine;
     CommunicationTcpSocketServer tcpServer;
-protected slots:
+    CommunicationTcpSocketClient tcpClient;
+    DataParser dataParser;
+
+public slots:
     void dataReceived(QDataStream&);
+    void errorHandling(const QString&);
 };
 
 #endif // STVAPPLICATION_H
