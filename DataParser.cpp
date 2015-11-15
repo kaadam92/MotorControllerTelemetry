@@ -29,11 +29,6 @@ DataParser::DataParser (const QString& codeFilePath)
 void DataParser::dataInput(QDataStream& stream)
 {
     qDebug() << "Adat érkezett"<< endl;
-/*
-    QByteArray ba;
-    stream >> ba;
-    qDebug() << ba.size() << " bájt:" << endl << ba.toHex();
-*/
 
     QByteArray byteArray;
     stream >> byteArray;
