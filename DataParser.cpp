@@ -58,6 +58,8 @@ void DataParser::dataInput(QDataStream& stream)
     return;
 }
 
+//Teszt módosítás
+
 void DataParser::PrintDataToDebug()
 {
     QMapIterator<qint16, double> i(dataMap);
