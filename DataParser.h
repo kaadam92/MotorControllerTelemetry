@@ -7,6 +7,7 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QtMath>
+#include <QDateTime>
 
 class DataParser : public QObject
 {
@@ -22,9 +23,9 @@ private:
     QFile codeFile;
     /** A kód-jelentést tartalmazó asszociatív tároló.*/
     QMap<QString, qint16> codeMap;
-    /** A jelentés-értéket tartalmazó asszociatív tároló.
-     * Gyakorlatilag ebben tárolódnak az adatok.*/
-    QMap<qint16, double> dataMap;
+
+    /** 2D map data container. */
+    QMap<QDateTime, QMap<qint16, double>> data;
 
 signals:
     void errorOccurred(const QString&);
