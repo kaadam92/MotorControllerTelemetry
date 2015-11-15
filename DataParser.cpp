@@ -24,6 +24,14 @@ DataParser::DataParser (const QString& codeFilePath)
         codeMap.insert(list.at(1), list.at(0).toInt(&ok, 16));
         line = fileInput.readLine();
     }
+
+    /** A fájlból való betöltés alapján a dataMap inicializációja 0-val.*/
+    QMapIterator<QString, quint16> i(codeMap);
+    while (i.hasNext())
+    {
+        i.next();
+        dataMap[i.value()]=0;
+    }
 }
 
 void DataParser::dataInput(QDataStream& stream)
@@ -57,7 +65,7 @@ void DataParser::dataInput(QDataStream& stream)
 
 void DataParser::PrintDataToDebug()
 {
-    QMapIterator<qint16, double> i(dataMap);
+    QMapIterator<quint16, double> i(dataMap);
     while (i.hasNext())
     {
         i.next();

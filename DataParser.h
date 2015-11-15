@@ -22,10 +22,12 @@ private:
     /** A kód-jelentést tartalmazó txt fájl objektum.*/
     QFile codeFile;
     /** A kód-jelentést tartalmazó asszociatív tároló.*/
-    QMap<QString, qint16> codeMap;
+    QMap<QString, quint16> codeMap;
+    /** Adatokat tartalmazó map, két időegység között folyamatosan töltődik fel adattal.*/
+    QMap<quint16, double> dataMap;
 
     /** 2D map data container. */
-    QMap<QDateTime, QMap<qint16, double>> data;
+    QMap<QDateTime, QMap<quint16, double>> dataTimestamp;
 
 signals:
     void errorOccurred(const QString&);
