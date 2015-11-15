@@ -4,7 +4,7 @@
 DataParser::DataParser (const QString& codeFilePath)
     :codeFile(codeFilePath)
 {
-    /** Hibát jelez, ha nem sikerült a fájlt megnyitni*/
+    /** Hibát jelez, ha nem sikerült a fájlt megnyitni. */
     if(!codeFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         emit errorOccurred(QString("Can't open codeMap file."));
@@ -16,7 +16,7 @@ DataParser::DataParser (const QString& codeFilePath)
     QString line;
     bool ok;
 
-    /** Feltölti a codeMap változót a fájlban található értékekkel.*/
+    /** Feltölti a codeMap változót a fájlban található értékekkel. */
     line = fileInput.readLine();
     while(!line.isNull())
     {

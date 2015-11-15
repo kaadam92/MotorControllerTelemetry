@@ -4,10 +4,11 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QString>
-#include <DataParser.h>
+#include "DataParser.h"
 #include "mainwindow.h"
 #include "Communication/CommunicationTcpSocketServer.h"
 #include "Communication/CommunicationTcpSocketClient.h"
+#include "Communication/CommunicationSerialPort.h"
 
 /**
  * @brief Alkalmazás osztály. A main() példányosítja és indítja el.
@@ -26,6 +27,8 @@ private:
     CommunicationTcpSocketServer tcpServer;
     CommunicationTcpSocketClient tcpClient;
     DataParser dataParser;
+    CommunicationSerialPort serialPort;
+
 
 public slots:
     void dataReceived(QDataStream&);

@@ -34,6 +34,7 @@ QDataStream *Communication::getReceiveStream()
 
 void Communication::dataReceived()
 {
+qDebug() << "dataReceived @ communication object.";
     // Addig olvasunk, amíg nem jön meg egy egész üzenet.
     //  Utána kiadunk egy Communication::dataReady signalt.
     QDataStream &inStream = *getReceiveStream();
@@ -61,7 +62,7 @@ void Communication::dataReceived()
     /* Jelezzük, hogy van új adat. Amit átadunk, az az id és méret utáni adattartalom.
      * Tömb esetében a QVector úgy szerializálja ki magát, hogy abban benne van a méret is. */
     emit dataReady(inStream);
-
+qDebug() << "dataReady signal emit.";
     // Lehet, hogy még egy következő üzenet elejét is megkaptuk.
     currentMessageSize = 0;
     if (socket->bytesAvailable() > 0) {
