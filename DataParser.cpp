@@ -76,7 +76,8 @@ void DataParser::PrintDataToDebug()
 void DataParser::saveDataTimestamp()
 {
     QDateTime currTime = QDateTime::currentDateTimeUtc();
-    dataTimestamp[currTime] = dataMap;
+    timestampQueue.enqueue(currTime);
+    dataQueue.enqueue(dataMap);
 
     qDebug() << currTime.toString("yyyy.MM.dd. hh:mm:ss:zzz");
     QMapIterator<quint16, double> i(dataMap);

@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QtMath>
 #include <QDateTime>
+#include <QQueue>
 
 class DataParser : public QObject
 {
@@ -26,9 +27,9 @@ private:
     /** Adatokat tartalmazó map, két időegység között folyamatosan töltődik fel adattal.*/
     QMap<quint16, double> dataMap;
 
-    /** 2D map data container. */
-    QMap<QDateTime, QMap<quint16, double>> dataTimestamp;
-
+    /** */
+    QQueue<QDateTime> timestampQueue;
+    QQueue<QMap<quint16, double>> dataQueue;
 signals:
     void errorOccurred(const QString&);
 
