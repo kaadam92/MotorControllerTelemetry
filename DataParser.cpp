@@ -87,3 +87,4 @@ void DataParser::saveDataTimestamp()
         qDebug() << i.key() << ": " << i.value() << endl;
     }
 }
+
