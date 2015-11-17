@@ -24,16 +24,19 @@ DataParser::DataParser (const QString& codeFilePath)
         codeMap.insert(list.at(1), list.at(0).toInt(&ok, 16));
         line = fileInput.readLine();
     }
+
+    /** A fájlból való betöltés alapján a dataMap inicializációja 0-val.*/
+    QMapIterator<QString, quint16> i(codeMap);
+    while (i.hasNext())
+    {
+        i.next();
+        dataMap[i.value()]=0;
+    }
 }
 
 void DataParser::dataInput(QDataStream& stream)
 {
     qDebug() << "Adat érkezett"<< endl;
-/*
-    QByteArray ba;
-    stream >> ba;
-    qDebug() << ba.size() << " bájt:" << endl << ba.toHex();
-*/
 
     QByteArray byteArray;
     stream >> byteArray;
@@ -58,14 +61,30 @@ void DataParser::dataInput(QDataStream& stream)
     return;
 }
 
-//Teszt módosítás
+// Test for master branch
 
 void DataParser::PrintDataToDebug()
 {
-    QMapIterator<qint16, double> i(dataMap);
+    QMapIterator<quint16, double> i(dataMap);
     while (i.hasNext())
     {
         i.next();
         qDebug() << i.key() << ": " << i.value() << endl;
     }
 }
+
+void DataParser::saveDataTimestamp()
+{
+    QDateTime currTime = QDateTime::currentDateTimeUtc();
+    timestampQueue.enqueue(currTime);
+    dataQueue.enqueue(dataMap);
+
+    qDebug() << currTime.toString("yyyy.MM.dd. hh:mm:ss:zzz");
+    QMapIterator<quint16, double> i(dataMap);
+    while (i.hasNext())
+    {
+        i.next();
+        qDebug() << i.key() << ": " << i.value() << endl;
+    }
+}
+
