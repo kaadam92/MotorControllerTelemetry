@@ -10,7 +10,7 @@ QT += core gui
 
 QT += qml quick widgets
 QT += serialport
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += printsupport
 
 TARGET = MotorControllerTelemetry
 TEMPLATE = app
@@ -24,7 +24,19 @@ SOURCES += main.cpp\
     Communication/CommunicationTcpSocketServer.cpp \
     Application.cpp \
     Communication/CommunicationTcpSocketClient.cpp \
-    DataParser.cpp
+    DataParser.cpp \
+    customplotitem.cpp \
+    qcustomplot.cpp
+
+
+RESOURCES += qml.qrc
+
+# Additional import path used to resolve QML modules in Qt Creator's code model
+#QML_IMPORT_PATH =
+
+# Default rules for deployment.
+include(deployment.pri)
+
 
 HEADERS  += mainwindow.h \
     Communication/Communication.h \
@@ -33,6 +45,8 @@ HEADERS  += mainwindow.h \
     Communication/CommunicationTcpSocketServer.h \
     Application.h \
     Communication/CommunicationTcpSocketClient.h \
-    DataParser.h
+    DataParser.h \
+    customplotitem.h \
+    qcustomplot.h
 
 FORMS    += mainwindow.ui
