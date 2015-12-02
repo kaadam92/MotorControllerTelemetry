@@ -12,9 +12,10 @@ Item {
 
     // Signalok, melyek a kiadott parancsokat jelzik és a nyomógombok
     //  eseménykezelői aktiválják őket.
-    signal resetCommand;
-    signal accelerateCommand;
-    signal stopCommand;
+    signal connectCommand;
+    signal hvEnableCommand;
+    signal driveEnableCommand;
+    signal stopCommand
 
     // A parancs nyomógombok elemcsoportja
     GroupBox {
@@ -37,7 +38,7 @@ Item {
             //  Megnyomása esetén (Button.Clicked signal) meghívja a resetCommand signalt. (Ez
             //  a signal látható innen, mivel a Button egyik ősében definiáltuk.)
             Button {
-                id: resetBtn
+                id: connectBtn
                 anchors.left: parent.left
                 anchors.right: parent.right
                 height: 210
@@ -57,7 +58,7 @@ Item {
                 text: qsTr("Connect")
                 anchors.leftMargin: 0
                 anchors.rightMargin: 0
-                onClicked: resetCommand()
+                onClicked: connectCommand()
             }
 
             Button {

@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     Communication/CommunicationTcpSocketClient.cpp \
     DataParser.cpp \
     customplotitem.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    windowseventhandler.cpp
 
 
 RESOURCES += qml.qrc
@@ -47,6 +48,7 @@ HEADERS  += mainwindow.h \
     Communication/CommunicationTcpSocketClient.h \
     DataParser.h \
     customplotitem.h \
-    qcustomplot.h
+    qcustomplot.h \
+    windowseventhandler.h
 
 FORMS    += mainwindow.ui

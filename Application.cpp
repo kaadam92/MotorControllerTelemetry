@@ -7,8 +7,25 @@ Application::Application(int argc, char *argv[])
     : QApplication(argc, argv), engine(),
       tcpServer(4444), tcpClient(),
       dataParser(QString("code.txt")),
-      serialPort(QString("COM4"),QSerialPort::Baud9600,QSerialPort::Data8,QSerialPort::NoParity,QSerialPort::OneStop)
-{    
+      serialPort(QString("COM4"),QSerialPort::Baud9600,QSerialPort::Data8,QSerialPort::NoParity,QSerialPort::OneStop),
+      eventhandler(*engine.rootContext())
+{
+
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    auto rootObjects = engine.rootObjects();
+    if (rootObjects.size() == 0)
+    {
+        qDebug() << "HIBA: Nem sikerült létrehozni a QML környezetet.";
+    }
+
+    QObject *rootObject = rootObjects[0];
+
+    //eventhandler.ConnectQmlSignals(rootObject);
+
+
+
+
     connect(&tcpServer,SIGNAL(dataReady(QDataStream&)),
             &dataParser,SLOT(dataInput(QDataStream&)));
     connect(&tcpClient,SIGNAL(dataReady(QDataStream&)),
@@ -24,6 +41,9 @@ Application::Application(int argc, char *argv[])
             this,SLOT(errorHandling(const QString&)));
     connect(&serialPort,SIGNAL(errorOccurred(const QString&)),
             this,SLOT(errorHandling(const QString&)));
+
+    QObject::connect(rootObject, SIGNAL(connectCommandCpp()),
+                     &eventhandler, SLOT(connectCommand()));
 
     /** Kommunikáció indítása, kapcsolódás.*/
     tcpClient.connect(QString("localhost"),4444);

@@ -13,7 +13,7 @@ ApplicationWindow {
 
     // Signalok, melyeket a C++ oldalon fogunk C++ slotokhoz kötni
     //  az StvApplication osztály konstruktorában.
-    signal resetCommandCpp()
+    signal connectCommandCpp()
     signal accelerateCommandCpp()
     signal stopCommandCpp()
 
@@ -44,12 +44,12 @@ ApplicationWindow {
         anchors.fill: parent
 
         // Az eseménykezelőkben tovább hívjuk az itteni signalokat a C++ oldal felé.
-        onResetCommand: {
-            resetCommandCpp();
+        onConnectCommand: {
+            connectCommandCpp();
         }
-        onAccelerateCommand: {
-            accelerateCommandCpp();
-        }
+//        onAccelerateCommand: {
+//            accelerateCommandCpp();
+//        }
         onStopCommand: {
             stopCommandCpp();
         }

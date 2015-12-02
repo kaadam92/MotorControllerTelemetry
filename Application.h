@@ -12,6 +12,7 @@
 #include "Communication/CommunicationTcpSocketServer.h"
 #include "Communication/CommunicationTcpSocketClient.h"
 #include "Communication/CommunicationSerialPort.h"
+#include "windowseventhandler.h"
 
 
 
@@ -34,6 +35,7 @@ private:
     DataParser dataParser;
     CommunicationSerialPort serialPort;
     QTimer* dataUpdateTimer;
+    WindowsEventHandler eventhandler;
 
 public slots:
     void errorHandling(const QString&);

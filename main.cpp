@@ -10,11 +10,16 @@
 
 int main(int argc, char *argv[])
 {
+
+
+    qmlRegisterType<CustomPlotItem>("CustomPlot", 1, 0, "CustomPlotItem");
+
+    Application app(argc, argv);
+
+/*
     QApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-
-    qmlRegisterType<CustomPlotItem>("CustomPlot", 1, 0, "CustomPlotItem");
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     auto rootObjects = engine.rootObjects();
@@ -24,7 +29,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-
+*/
 
 
     return app.exec();
