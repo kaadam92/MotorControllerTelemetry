@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QDateTime>
 #include <QTimer>
+#include <QDebug>
 
 class QCustomPlot;
 
@@ -17,6 +18,8 @@ public:
     virtual ~CustomPlotItem();
 
     void paint( QPainter* painter );
+
+    void SayBMEG(){qDebug() << "BMEG";}
 
     Q_INVOKABLE void initCustomPlot();
 

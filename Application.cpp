@@ -23,7 +23,8 @@ Application::Application(int argc, char *argv[])
 
     //eventhandler.ConnectQmlSignals(rootObject);
 
-
+    QList<CustomPlotItem*> lista = rootObject->findChildren<CustomPlotItem*>();
+    //CustomPlotItem* myplot = rootObject->findChild<CustomPlotItem*>("CustomPlotItem").SayBMEG();
 
 
     connect(&tcpServer,SIGNAL(dataReady(QDataStream&)),
@@ -50,14 +51,14 @@ Application::Application(int argc, char *argv[])
                      &eventhandler, SLOT(driveEnableCommand()));
     QObject::connect(rootObject, SIGNAL(stopCommandCpp()),
                      &eventhandler, SLOT(stopCommand()));
-
+    rootObject->
     /** Kommunikáció indítása, kapcsolódás.*/
-    tcpClient.connect(QString("localhost"),4444);
-    serialPort.connect();
+    //tcpClient.connect(QString("localhost"),4444);
+    //serialPort.connect();
 
     /** Adat frissítés timer indítása.*/
-    dataUpdateTimer = new QTimer(this);
-    dataUpdateTimer->stop();
+    //dataUpdateTimer = new QTimer(this);
+    //dataUpdateTimer->stop();
 
     connect(dataUpdateTimer,SIGNAL(timeout()),
             this,SLOT(dataTimeout()));
@@ -67,14 +68,14 @@ Application::Application(int argc, char *argv[])
             &eventhandler,SLOT(refreshPlot()));
 
     /** Folyamatos timer legyen.*/
-    dataUpdateTimer->setSingleShot(false);
-    dataUpdateTimer->setInterval(500);
-    dataUpdateTimer->start();
+    //dataUpdateTimer->setSingleShot(false);
+    //dataUpdateTimer->setInterval(500);
+    //dataUpdateTimer->start();
 }
 
 void Application::dataTimeout()
 {
-    emit getData(dataVectorMap);
+    //emit getData(dataVectorMap);
 }
 
 void Application::errorHandling(const QString& error)

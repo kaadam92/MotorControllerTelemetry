@@ -15,6 +15,8 @@
 #include "Communication/CommunicationTcpSocketClient.h"
 #include "Communication/CommunicationSerialPort.h"
 #include "windowseventhandler.h"
+#include "qcustomplot.h"
+#include "customplotitem.h"
 
 
 

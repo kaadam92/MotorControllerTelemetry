@@ -47,6 +47,7 @@
 /*!
   Creates a new QCPPainter instance and sets default values
 */
+
 QCPPainter::QCPPainter() :
   QPainter(),
   mModes(pmDefault),

@@ -15,6 +15,8 @@ CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent
     connect( this, &QQuickPaintedItem::widthChanged, this, &CustomPlotItem::updateCustomPlotSize );
     connect( this, &QQuickPaintedItem::heightChanged, this, &CustomPlotItem::updateCustomPlotSize );
 
+    connect(&replotTimer, SIGNAL(timeout()),
+            this, SLOT(replotTimeout()));
     replotTimer.setInterval(replotTimerInterval);
     replotTimer.start();
 }
