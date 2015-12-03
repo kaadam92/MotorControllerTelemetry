@@ -21,12 +21,12 @@ DataParser::DataParser (const QString& codeFilePath)
     while(!line.isNull())
     {
         list = line.split("-");
-        codeMap.insert(list.at(1), list.at(0).toInt(&ok, 16));
+        codeMap.insert(list.at(0).toInt(&ok, 16), list.at(1));
         line = fileInput.readLine();
     }
 
     /** A fájlból való betöltés alapján a dataMap inicializációja 0-val.*/
-    QMapIterator<QString, quint16> i(codeMap);
+    QMapIterator<quint16, QString> i(codeMap);
     while (i.hasNext())
     {
         i.next();
@@ -40,39 +40,43 @@ void DataParser::dataInput(QDataStream& stream)
 
     QByteArray byteArray;
     stream >> byteArray;
-    quint16 code = ((quint8)byteArray[0])*256+(quint8)byteArray[1];
+    if(byteArray.size() >= 2+sizeof(double))
+    {
+        quint16 code;
+        double value;
+        memcpy(&code, byteArray.data(), 2);
+        memcpy(&value, byteArray.data()+2, sizeof(double));
+        dataMap[codeMap.value(code)]=value;
+    }
 
-    if(code == codeMap.value(QString("temp")))
-    {
-        quint16 ST = ((quint8)byteArray[2])*256+(quint8)byteArray[3];
-        dataMap[code]=175.0*ST/(qPow(2,16)-1)-45;
-    }
-    else if(code == codeMap.value(QString("hum")))
-    {
-        quint16 SRH = ((quint8)byteArray[2])*256+(quint8)byteArray[3];
-        dataMap[code]=100.0*SRH/(qPow(2,16)-1);
-    }
-    else if(code == codeMap.value(QString("vbat")))
-    {
-        quint16 vbat=((quint8)byteArray[2])*256+(quint8)byteArray[3];
-        dataMap[code]=vbat;
-    }
     PrintDataToDebug();
     return;
+}
+
+void DataParser::getData(QMap<QString, QVector<double>>& cont)
+{
+    QMap<QString, double>::iterator idata;
+
+    for (idata=dataMap.begin(); idata!=dataMap.end(); ++idata)
+    {
+        cont[idata.key()].append(idata.value());
+    }
+
+    emit newToPlot();
 }
 
 // Test for master branch
 
 void DataParser::PrintDataToDebug()
 {
-    QMapIterator<quint16, double> i(dataMap);
+    QMapIterator<QString, double> i(dataMap);
     while (i.hasNext())
     {
         i.next();
         qDebug() << i.key() << ": " << i.value() << endl;
     }
 }
-
+/*
 void DataParser::saveDataTimestamp()
 {
     QDateTime currTime = QDateTime::currentDateTimeUtc();
@@ -87,4 +91,4 @@ void DataParser::saveDataTimestamp()
         qDebug() << i.key() << ": " << i.value() << endl;
     }
 }
-
+*/

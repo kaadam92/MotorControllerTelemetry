@@ -36,6 +36,7 @@ void WindowsEventHandler::stopCommand()
 {
     qDebug() << "Stop gomb megnyomva.";
 }
+
 /*
 void MainWindowsEventHandler::historyChanged()
 {

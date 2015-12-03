@@ -4,15 +4,19 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QString>
+#include <QVector>
 #include <QDebug>
 #include <QThread>
 #include <QTimer>
+#include <QMap>
 #include "DataParser.h"
 #include "mainwindow.h"
 #include "Communication/CommunicationTcpSocketServer.h"
 #include "Communication/CommunicationTcpSocketClient.h"
 #include "Communication/CommunicationSerialPort.h"
 #include "windowseventhandler.h"
+#include "qcustomplot.h"
+#include "customplotitem.h"
 
 
 
@@ -45,7 +49,11 @@ private:
 
 public slots:
     void errorHandling(const QString&);
+<<<<<<< HEAD
     void tmp();
+=======
+    void dataTimeout();
+>>>>>>> sandbox-koincidencia
 };
 
 #endif // STVAPPLICATION_H
