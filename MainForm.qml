@@ -197,7 +197,7 @@ Item {
                        objectName: "graphTabItem"
                            CustomPlotItem {
 
-                               objectName: "graphCustomPlot"
+                               objectName: "customPlot"
                                id: customPlot
                                anchors.fill: parent
 

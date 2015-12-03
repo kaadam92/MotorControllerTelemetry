@@ -39,21 +39,17 @@ private:
     CommunicationTcpSocketClient tcpClient;
     DataParser dataParser;
     CommunicationSerialPort serialPort;
-    QTimer* dataUpdateTimer;
     WindowsEventHandler eventhandler;
 
-    QQuickItem* findItemByName(const QString& name);
-    QQuickItem* findItemByName(QObject *rootObject, const QString& name);
-    QQuickItem* findItemByName(QList<QObject*> nodes, const QString& name);
-    QQuickItem* mainWindowObject;
+    QObject *rootObject;
+    QCustomPlot* customPlotPtr;
 
+    QTimer checkTabTimer;
+
+private slots:
+    void checkTab();
 public slots:
     void errorHandling(const QString&);
-<<<<<<< HEAD
-    void tmp();
-=======
-    void dataTimeout();
->>>>>>> sandbox-koincidencia
 };
 
 #endif // STVAPPLICATION_H

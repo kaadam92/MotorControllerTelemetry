@@ -19,8 +19,6 @@ public:
 
     void paint( QPainter* painter );
 
-    void SayBMEG(){qDebug() << "BMEG";}
-
     Q_INVOKABLE void initCustomPlot();
 
 protected:
@@ -34,7 +32,7 @@ protected:
     void setupQuadraticDemo( QCustomPlot* customPlot );
 
 private:
-    QCustomPlot*         m_CustomPlot;
+    QCustomPlot* m_CustomPlot;
 
     /** A grafikonra rajzolandó adatokat tartalmazó asszociatív tároló.*/
     QMap<QString, QVector<double>> dataVectorMap;
