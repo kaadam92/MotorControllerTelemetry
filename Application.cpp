@@ -34,6 +34,7 @@ Application::Application(int argc, char *argv[])
     dataUpdateTimer->stop();
     connect(dataUpdateTimer,SIGNAL(timeout()),
             &dataParser,SLOT(saveDataTimestamp()));
+
     /** Folyamatos timer legyen.*/
     dataUpdateTimer->setSingleShot(false);
     dataUpdateTimer->setInterval(500);
