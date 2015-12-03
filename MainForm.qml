@@ -202,10 +202,10 @@ Item {
 
 
             style: TabViewStyle {
-                frameOverlap: 1
+                frameOverlap: 0
                 tab: Rectangle {
                     color: styleData.selected ? "grey" :"lightgrey"
-                    //border.color:  "darkgrey"
+                    border.color:  "#888"
                     implicitWidth: Math.max(text.width + 4, 100)
                     implicitHeight: 25
                     radius: 1
@@ -289,14 +289,66 @@ Item {
 
                     //model: historyModel
 
-                    Text {
-                        color: Qt.rgba(1, 0, 0, 1)
-                        text: qsTr("hello, world")
+
+                    ListView {
+                        id: eventLog
+                        anchors.fill: parent
+                        anchors.margins: 5
+                        delegate: GroupBox {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            Row {
+                                id: row2
+                                Rectangle {
+                                    width: 20
+                                    height: 20
+                                    radius: 10
+                                    color: colorCode
+                                }
+
+
+                                Text {
+                                    text: message
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    font.bold: false
+                                }
+                                spacing: 5
+                            }
+                        }
+                        model: ListModel {
+                            id: eventLogModel
+                            ListElement {
+                                message: "Indul a program..."
+                                colorCode: "grey"
+                            }
+                            ListElement {
+                                message: "Pirossal kezdünk"
+                                colorCode: "red"
+                            }
+                            ListElement {
+                                message: "Pirossal kezdünk"
+                                colorCode: "red"
+                            }
+                            ListElement {
+                                message: "ERROR: BMS_ERR_Short_Circuit"
+                                colorCode: "red"
+                            }
+                            ListElement {
+                                message: "Pirossal kezdünk"
+                                colorCode: "orange"
+                            }
+                            ListElement {
+                                message: "Pirossal kezdünk"
+                                colorCode: "green"
+                            }
+                            ListElement {
+                                message: "Pirossal kezdünk"
+                                colorCode: "green"
+                            }
+                        }
                     }
 
-                    // A delegate megadása, vagyis hogy egy listaelem hogyan jelenjen meg.
-                    //  (Már fentebb definiáltuk.)
-                    delegate: stateDelegate
+
 
                     // Eseménykezelő, az elemek darabszámának változása esetén a kijelölést
                     //  a legalsó elemre viszi. Ezzel oldja meg, hogy folyamatosan scrollozódjon
