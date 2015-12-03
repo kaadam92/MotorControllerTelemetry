@@ -21,12 +21,12 @@ DataParser::DataParser (const QString& codeFilePath)
     while(!line.isNull())
     {
         list = line.split("-");
-        codeMap.insert(list.at(1), list.at(0).toInt(&ok, 16));
+        codeMap.insert(list.at(0).toInt(&ok, 16), list.at(1));
         line = fileInput.readLine();
     }
 
     /** A fájlból való betöltés alapján a dataMap inicializációja 0-val.*/
-    QMapIterator<QString, quint16> i(codeMap);
+    QMapIterator<quint16, QString> i(codeMap);
     while (i.hasNext())
     {
         i.next();
