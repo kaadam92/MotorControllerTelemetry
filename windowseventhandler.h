@@ -15,7 +15,7 @@ class WindowsEventHandler : public QObject
     Q_OBJECT
 
 public:
-    WindowsEventHandler(QQmlContext &qmlContext);
+    WindowsEventHandler(QQmlContext &qmlContext, auto rootObject);
 
     ~WindowsEventHandler() = default;
 
@@ -28,7 +28,13 @@ public slots:
     void hvEnableCommand();
 
 private:
+
+    auto rootObject = rootObject;
+
     QQmlContext &qmlContext;
+    QQuickItem* findItemByName(const QString& name);
+    QQuickItem* findItemByName(QObject *rootObject, const QString& name);
+    QQuickItem* findItemByName(QList<QObject*> nodes, const QString& name);
 
 };
 

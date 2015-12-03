@@ -9,6 +9,17 @@ Item {
     width: 1360
     height: 768
     anchors.fill: parent
+    objectName: "MainWindow"
+
+    property color selectedColor: "grey"
+
+    function selectColor(messageText, color)
+    {
+        selectedColor = color;
+        drawingCanvas.requestPaint();
+        eventLogModel.append( { message: messageText, colorCode: color } );
+        console.log("selectColor(" + messageText + ", " + color + ")");
+    }
 
     // Signalok, melyek a kiadott parancsokat jelzik és a nyomógombok
     //  eseménykezelői aktiválják őket.

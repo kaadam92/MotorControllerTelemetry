@@ -6,13 +6,15 @@ import CustomPlot 1.0
 
 // Ez lesz az alkalmazás főablaka
 ApplicationWindow {
-    title: qsTr("Hello World")
+    title: qsTr("Elektromos jármű diagnoszikai szoftver")
     width: 1360
     height: 768
     visible: true
 
     // Signalok, melyeket a C++ oldalon fogunk C++ slotokhoz kötni
     //  az StvApplication osztály konstruktorában.
+    objectName: "ApplicationWindow"
+
     signal connectCommandCpp()
     signal hvEnableCommandCpp()
     signal driveEnableCommandCpp()

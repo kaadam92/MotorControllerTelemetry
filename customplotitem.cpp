@@ -134,6 +134,6 @@ void CustomPlotItem::setupQuadraticDemo( QCustomPlot* customPlot )
     customPlot->xAxis->setRange( -1, 1 );
     customPlot->yAxis->setRange( -1, 1 );
 
-    customPlot ->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables );
+    customPlot ->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iMultiSelect );
     connect( customPlot, SIGNAL( plottableClick( QCPAbstractPlottable*, QMouseEvent* ) ), this, SLOT( graphClicked( QCPAbstractPlottable* ) ) );
 }
