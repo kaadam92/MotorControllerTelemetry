@@ -148,6 +148,7 @@ Item {
 
         // Oszlopba rendezett további elemek
         TabView{
+            objectName: "graphTabView"
             height: 486
             frameVisible: true
             tabsVisible: true
@@ -161,6 +162,7 @@ Item {
             anchors.rightMargin: -6
             anchors.left : commandsGB.right
             anchors.top : parent.top
+
 
             Tab{
                 title:"Pillanatnyi értékek"
@@ -186,12 +188,16 @@ Item {
                 }
             }
 
+
             Tab {
+                   objectName: "graphTab"
                    title: "Grafikon"
                    Item {
 
+                       objectName: "graphTabItem"
                            CustomPlotItem {
 
+                               objectName: "graphCustomPlot"
                                id: customPlot
                                anchors.fill: parent
 

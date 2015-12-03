@@ -23,6 +23,7 @@
  */
 class Application : public QApplication
 {
+    Q_OBJECT
 public:
     /** Konstruktor. Alapvető példányosítások és signal bekötések. */
     Application(int argc, char *argv[]);
@@ -37,8 +38,14 @@ private:
     QTimer* dataUpdateTimer;
     WindowsEventHandler eventhandler;
 
+    QQuickItem* findItemByName(const QString& name);
+    QQuickItem* findItemByName(QObject *rootObject, const QString& name);
+    QQuickItem* findItemByName(QList<QObject*> nodes, const QString& name);
+    QQuickItem* mainWindowObject;
+
 public slots:
     void errorHandling(const QString&);
+    void tmp();
 };
 
 #endif // STVAPPLICATION_H

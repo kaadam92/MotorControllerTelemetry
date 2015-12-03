@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QQmlContext>
 #include <QDebug>
+#include <QQuickItem>
 
 class QQuickItem;
 class QQmlContext;
@@ -15,7 +16,7 @@ class WindowsEventHandler : public QObject
     Q_OBJECT
 
 public:
-    WindowsEventHandler(QQmlContext &qmlContext, auto rootObject);
+    WindowsEventHandler(QQmlContext &qmlContext);
 
     ~WindowsEventHandler() = default;
 
@@ -29,12 +30,9 @@ public slots:
 
 private:
 
-    auto rootObject = rootObject;
 
     QQmlContext &qmlContext;
-    QQuickItem* findItemByName(const QString& name);
-    QQuickItem* findItemByName(QObject *rootObject, const QString& name);
-    QQuickItem* findItemByName(QList<QObject*> nodes, const QString& name);
+
 
 };
 

@@ -23,7 +23,17 @@ Application::Application(int argc, char *argv[])
 
     //eventhandler.ConnectQmlSignals(rootObject);
 
+    mainWindowObject = findItemByName(rootObject, QString("ApplicationWindow"));
+    if (!mainWindowObject)
+    {
+        qDebug() << "Nem találom a ApplicationWindow objektumot.";
+    }
 
+    //auto qmlObject = rootObject -> findChildren<QObject*>();
+    auto qmlObject = rootObject -> findChild<QObject*>(QString("graphCustomPlot"));
+    //qmlObject = qmlObject -> findChild<QObject*>(QString("graphTab"));
+    //qmlObject = qmlObject -> findChild<QObject*>(QString("graphTabItem"));
+    //qmlObject = qmlObject -> findChild<QObject*>(QString("graphCustomPlot"));
 
 
     connect(&tcpServer,SIGNAL(dataReady(QDataStream&)),
@@ -58,12 +68,10 @@ Application::Application(int argc, char *argv[])
     /** Adat frissítés timer indítása.*/
     dataUpdateTimer = new QTimer(this);
     dataUpdateTimer->stop();
-    connect(dataUpdateTimer,SIGNAL(timeout()),
-            &dataParser,SLOT(saveDataTimestamp()));
 
     /** Folyamatos timer legyen.*/
     dataUpdateTimer->setSingleShot(false);
-    dataUpdateTimer->setInterval(500);
+    dataUpdateTimer->setInterval(5000);
     dataUpdateTimer->start();
 }
 
@@ -71,4 +79,45 @@ void Application::errorHandling(const QString& error)
 {
     qWarning() << "Hiba!";
     qWarning() << error << endl;
+}
+
+QQuickItem* Application::findItemByName(const QString& name)
+{
+    Q_ASSERT(mainWindowObject != nullptr);
+    if (mainWindowObject->objectName() == name)
+    {
+        return mainWindowObject;
+    }
+    return findItemByName(mainWindowObject->children(), name);
+}
+
+QQuickItem* Application::findItemByName(QObject *rootObject, const QString& name)
+{
+    Q_ASSERT(rootObject != nullptr);
+    if (rootObject->objectName() == name)
+    {
+        return (QQuickItem*)rootObject;
+    }
+    return findItemByName(rootObject->children(), name);
+}
+
+QQuickItem* Application::findItemByName(QList<QObject*> nodes, const QString& name)
+{
+    for(int i = 0; i < nodes.size(); i++)
+    {
+        // Node keresése
+        if (nodes.at(i) && nodes.at(i)->objectName() == name)
+        {
+            return dynamic_cast<QQuickItem*>(nodes.at(i));
+        }
+        // Gyerekekben keresés
+        else if (nodes.at(i) && nodes.at(i)->children().size() > 0)
+        {
+            QQuickItem* item = findItemByName(nodes.at(i)->children(), name);
+            if (item)
+                return item;
+        }
+    }
+    // Nem találtuk.
+    return nullptr;
 }
