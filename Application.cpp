@@ -44,6 +44,12 @@ Application::Application(int argc, char *argv[])
 
     QObject::connect(rootObject, SIGNAL(connectCommandCpp()),
                      &eventhandler, SLOT(connectCommand()));
+    QObject::connect(rootObject, SIGNAL(hvEnableCommandCpp()),
+                     &eventhandler, SLOT(hvEnableCommand()));
+    QObject::connect(rootObject, SIGNAL(driveEnableCommandCpp()),
+                     &eventhandler, SLOT(driveEnableCommand()));
+    QObject::connect(rootObject, SIGNAL(stopCommandCpp()),
+                     &eventhandler, SLOT(stopCommand()));
 
     /** Kommunikáció indítása, kapcsolódás.*/
     tcpClient.connect(QString("localhost"),4444);

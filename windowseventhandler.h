@@ -23,6 +23,9 @@ public:
 
 public slots:
     void connectCommand();
+    void stopCommand();
+    void driveEnableCommand();
+    void hvEnableCommand();
 
 private:
     QQmlContext &qmlContext;

@@ -14,7 +14,8 @@ ApplicationWindow {
     // Signalok, melyeket a C++ oldalon fogunk C++ slotokhoz kötni
     //  az StvApplication osztály konstruktorában.
     signal connectCommandCpp()
-    signal accelerateCommandCpp()
+    signal hvEnableCommandCpp()
+    signal driveEnableCommandCpp()
     signal stopCommandCpp()
 
     // Az ablak menuBar tulajdonságának értékül adunk egy MenuBar példányt, amit itt rakunk össze.
@@ -23,8 +24,12 @@ ApplicationWindow {
         //  benne egyetlen menüponttal.
         Menu {
             // A menünek a title tulajdonsága egyúttal az & jellel megadja a billentyű parancsot is: Alt-x
-            title: qsTr("&Exit")
-            // Az egyetlen menüpont
+            title: qsTr("&All")
+
+            MenuItem {
+                text: qsTr("Settings")
+
+            }
             MenuItem {
                 text: qsTr("E&xit")
                 // A menüpont Triggered signaljához kapcsolunk eseménykezelőt
@@ -47,9 +52,15 @@ ApplicationWindow {
         onConnectCommand: {
             connectCommandCpp();
         }
-//        onAccelerateCommand: {
-//            accelerateCommandCpp();
-//        }
+
+        onHvEnableCommand: {
+            hvEnableCommandCpp();
+        }
+
+        onDriveEnableCommand: {
+            driveEnableCommandCpp();
+        }
+
         onStopCommand: {
             stopCommandCpp();
         }

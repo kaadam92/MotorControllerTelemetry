@@ -16,20 +16,6 @@ int main(int argc, char *argv[])
 
     Application app(argc, argv);
 
-/*
-    QApplication app(argc, argv);
-
-    QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-    auto rootObjects = engine.rootObjects();
-    if (rootObjects.size() == 0)
-    {
-        qDebug() << "HIBA: Nem sikerült létrehozni a QML környezetet.";
-        return 0;
-    }
-
-*/
 
 
     return app.exec();

@@ -81,7 +81,7 @@ Item {
                 text: qsTr("HV Enable")
                 anchors.rightMargin: 0
                 anchors.leftMargin: 0
-                onClicked: accelerateCommand()
+                onClicked: hvEnableCommand()
             }
 
             Button {
@@ -104,7 +104,7 @@ Item {
                 text: qsTr("Drive Enable")
                 anchors.rightMargin: 0
                 anchors.leftMargin: 0
-                onClicked: accelerateCommand()
+                onClicked: driveEnableCommand();
             }
 
             Button {
@@ -288,6 +288,11 @@ Item {
                     //  Típusa QList<QObject*>, a tárolt pointerek valójában RobotState-ekre mutatnak.
 
                     //model: historyModel
+
+                    Text {
+                        color: Qt.rgba(1, 0, 0, 1)
+                        text: qsTr("hello, world")
+                    }
 
                     // A delegate megadása, vagyis hogy egy listaelem hogyan jelenjen meg.
                     //  (Már fentebb definiáltuk.)
