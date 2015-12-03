@@ -1,6 +1,11 @@
 #pragma once
 
 #include <QtQuick>
+#include <QMap>
+#include <QVector>
+#include <QDateTime>
+#include <QTimer>
+
 class QCustomPlot;
 
 class CustomPlotItem : public QQuickPaintedItem
@@ -28,9 +33,27 @@ protected:
 private:
     QCustomPlot*         m_CustomPlot;
 
+    /** A grafikonra rajzolandó adatokat tartalmazó asszociatív tároló.*/
+    QMap<QString, QVector<double>> dataVectorMap;
+    /** A grafikon időtengelyét leképező vektor.*/
+    QVector<QDateTime> timeVec;
+    /** Új adatok beolvasásához és újrarajzoláshoz használt timer.*/
+    QTimer replotTimer;
+
+signals:
+    /** Hatására meg kell történjen az új adatok betöltése a paraméterként
+     * átadott asszociatív tárolóban.*/
+    void getData(QMap<QString, QVector<double>>&);
+
+public slots:
+    /** Hatására emittálódik a getData(...) signal.*/
+    void replotTimeout(){emit getData(dataVectorMap);}
+    /** Hatására az adatoknak megfelelően újrarajzolódik a grafikon.
+     * Új adatok felvétele után ajánlott használni.*/
+    void replot();
+
 private slots:
     //void graphClicked( QCPAbstractPlottable* plottable );
     void onCustomReplot();
     void updateCustomPlotSize();
-
 };

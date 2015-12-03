@@ -2,6 +2,8 @@
 #include "qcustomplot.h"
 #include <QDebug>
 
+const int replotTimerInterval = 500;
+
 CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent )
     , m_CustomPlot( nullptr )
 {
@@ -12,6 +14,9 @@ CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent
 
     connect( this, &QQuickPaintedItem::widthChanged, this, &CustomPlotItem::updateCustomPlotSize );
     connect( this, &QQuickPaintedItem::heightChanged, this, &CustomPlotItem::updateCustomPlotSize );
+
+    replotTimer.setInterval(replotTimerInterval);
+    replotTimer.start();
 }
 
 CustomPlotItem::~CustomPlotItem()
@@ -136,4 +141,10 @@ void CustomPlotItem::setupQuadraticDemo( QCustomPlot* customPlot )
 
     customPlot ->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables );
     connect( customPlot, SIGNAL( plottableClick( QCPAbstractPlottable*, QMouseEvent* ) ), this, SLOT( graphClicked( QCPAbstractPlottable* ) ) );
+}
+
+void CustomPlotItem::replot()
+{
+    timeVec.append(QDateTime::currentDateTime());
+    qDebug() << "Replottolnék én, csak még ostoba vagyok és nem tudok...";
 }

@@ -58,13 +58,23 @@ Application::Application(int argc, char *argv[])
     /** Adat frissítés timer indítása.*/
     dataUpdateTimer = new QTimer(this);
     dataUpdateTimer->stop();
+
     connect(dataUpdateTimer,SIGNAL(timeout()),
-            &dataParser,SLOT(saveDataTimestamp()));
+            this,SLOT(dataTimeout()));
+    connect(this,SIGNAL(getData(QMap<QString,QVector<double> >&)),
+            &dataParser,SLOT(getData(QMap<QString, QVector<double>>&)));
+    connect(&dataParser,SIGNAL(newToPlot()),
+            &eventhandler,SLOT(refreshPlot()));
 
     /** Folyamatos timer legyen.*/
     dataUpdateTimer->setSingleShot(false);
     dataUpdateTimer->setInterval(500);
     dataUpdateTimer->start();
+}
+
+void Application::dataTimeout()
+{
+    emit getData(dataVectorMap);
 }
 
 void Application::errorHandling(const QString& error)

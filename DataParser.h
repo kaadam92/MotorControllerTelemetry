@@ -20,7 +20,7 @@ public:
     void PrintDataToDebug();
 
     /** Segédfüggvény az adatstring-kód kereséséhez.*/
-    quint16 GetCode(QString& str){return codeMap[str];}
+    //quint16 GetCode(QString& str){return codeMap[str];}
 
 private:
     /** A kód-jelentést tartalmazó txt fájl objektum.*/
@@ -31,9 +31,10 @@ private:
     QMap<QString, double> dataMap;
 
     /** Timestamp tárolása.*/
-    QQueue<QDateTime> timestampQueue;
+//    QQueue<QDateTime> timestampQueue;
     /** Adat tárolása.*/
-    QQueue<QMap<quint16, double>> dataQueue;
+//    QQueue<QMap<quint16, double>> dataQueue;
+
 signals:
     void errorOccurred(const QString&);
     /** Jelzi, ha új adatot lehet kirajzolni a grafikus felületre.*/
@@ -42,10 +43,12 @@ signals:
 public slots:
     /** Ide lehet bekötni a kommunikációs dataReady signalokat.*/
     void dataInput(QDataStream&);
+    /** A paraméterként kapott asszociatív tárolóba bemásolja az akruális adatokat.*/
+    void getData(QMap<QString, QVector<double>>&);
 
     /** Ide lehet bekötni a timer signalt. Minden egyes híváskor
      * elmenti új timestampel az adatokat dataTimestamp-be.*/
-    void saveDataTimestamp();
+    //void saveDataTimestamp();
 
 };
 

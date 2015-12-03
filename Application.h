@@ -4,9 +4,11 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QString>
+#include <QVector>
 #include <QDebug>
 #include <QThread>
 #include <QTimer>
+#include <QMap>
 #include "DataParser.h"
 #include "mainwindow.h"
 #include "Communication/CommunicationTcpSocketServer.h"
@@ -23,6 +25,7 @@
  */
 class Application : public QApplication
 {
+    Q_OBJECT
 public:
     /** Konstruktor. Alapvető példányosítások és signal bekötések. */
     Application(int argc, char *argv[]);
@@ -39,6 +42,7 @@ private:
 
 public slots:
     void errorHandling(const QString&);
+    void dataTimeout();
 };
 
 #endif // STVAPPLICATION_H
