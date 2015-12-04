@@ -5,9 +5,9 @@
 #-------------------------------------------------
 
 CONFIG += c++14
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 QMAKE_CXXFLAGS_CXX11    = -std=c++1y
 QT += core gui
-
 QT += qml quick widgets
 QT += serialport
 QT += printsupport

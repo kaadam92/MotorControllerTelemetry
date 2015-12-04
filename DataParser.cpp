@@ -22,6 +22,7 @@ DataParser::DataParser (const QString& codeFilePath)
     {
         list = line.split("-");
         codeMap.insert(list.at(0).toInt(&ok, 16), list.at(1));
+        codeMapInv.insert(list.at(1), list.at(0).toInt(&ok, 16));
         line = fileInput.readLine();
     }
 
@@ -49,7 +50,7 @@ void DataParser::dataInput(QDataStream& stream)
         dataMap[codeMap.value(code)]=value;
     }
 
-    PrintDataToDebug();
+    //PrintDataToDebug();
     return;
 }
 
@@ -76,19 +77,3 @@ void DataParser::PrintDataToDebug()
         qDebug() << i.key() << ": " << i.value() << endl;
     }
 }
-/*
-void DataParser::saveDataTimestamp()
-{
-    QDateTime currTime = QDateTime::currentDateTimeUtc();
-    timestampQueue.enqueue(currTime);
-    dataQueue.enqueue(dataMap);
-
-    qDebug() << currTime.toString("yyyy.MM.dd. hh:mm:ss:zzz");
-    QMapIterator<quint16, double> i(dataMap);
-    while (i.hasNext())
-    {
-        i.next();
-        qDebug() << i.key() << ": " << i.value() << endl;
-    }
-}
-*/

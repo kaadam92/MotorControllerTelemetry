@@ -2,8 +2,6 @@
 #include "qcustomplot.h"
 #include <QDebug>
 
-const int replotTimerInterval = 500;
-
 CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent )
     , m_CustomPlot( nullptr )
 {
@@ -15,10 +13,6 @@ CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent
     connect( this, &QQuickPaintedItem::widthChanged, this, &CustomPlotItem::updateCustomPlotSize );
     connect( this, &QQuickPaintedItem::heightChanged, this, &CustomPlotItem::updateCustomPlotSize );
 
-    connect(&replotTimer, SIGNAL(timeout()),
-            this, SLOT(replotTimeout()));
-    replotTimer.setInterval(replotTimerInterval);
-    replotTimer.start();
 }
 
 CustomPlotItem::~CustomPlotItem()
@@ -128,11 +122,15 @@ void CustomPlotItem::setupQuadraticDemo( QCustomPlot* customPlot )
     customPlot->graph( 0 )->setPen( QPen( Qt::red ) );
     customPlot->graph( 0 )->setSelectedPen( QPen( Qt::blue, 2 ) );
     customPlot->graph( 0 )->setData( x, y );
+    customPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
+    customPlot->xAxis->setDateTimeFormat("yyyy.MM.dd.\nhh:mm:ss:zzz");
 
     customPlot->addGraph();
     customPlot->graph( 1 )->setPen( QPen( Qt::magenta ) );
     customPlot->graph( 1 )->setSelectedPen( QPen( Qt::blue, 2 ) );
     customPlot->graph( 1 )->setData( lx, ly );
+    customPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
+    customPlot->xAxis->setDateTimeFormat("yyyy.MM.dd.\nhh:mm:ss:zzz");
 
     // give the axes some labels:
     customPlot->xAxis->setLabel( "x" );
@@ -143,10 +141,4 @@ void CustomPlotItem::setupQuadraticDemo( QCustomPlot* customPlot )
 
     customPlot ->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iMultiSelect );
     connect( customPlot, SIGNAL( plottableClick( QCPAbstractPlottable*, QMouseEvent* ) ), this, SLOT( graphClicked( QCPAbstractPlottable* ) ) );
-}
-
-void CustomPlotItem::replot()
-{
-    timeVec.append(QDateTime::currentDateTime());
-    qDebug() << "Replottolnék én, csak még ostoba vagyok és nem tudok...";
 }

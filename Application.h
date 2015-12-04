@@ -18,8 +18,6 @@
 #include "qcustomplot.h"
 #include "customplotitem.h"
 
-
-
 /**
  * @brief Alkalmazás osztály. A main() példányosítja és indítja el.
  *
@@ -28,6 +26,7 @@
 class Application : public QApplication
 {
     Q_OBJECT
+
 public:
     /** Konstruktor. Alapvető példányosítások és signal bekötések. */
     Application(int argc, char *argv[]);
@@ -35,7 +34,7 @@ public:
 
 private:
     QQmlApplicationEngine engine;
-    CommunicationTcpSocketServer tcpServer;
+//    CommunicationTcpSocketServer tcpServer;
     CommunicationTcpSocketClient tcpClient;
     DataParser dataParser;
     CommunicationSerialPort serialPort;
@@ -46,10 +45,16 @@ private:
 
     QTimer checkTabTimer;
 
+    void sendData(quint16 code, double value);
+
 private slots:
     void checkTab();
 public slots:
     void errorHandling(const QString&);
+    void connectToServer();
+    void hvenCommand();
+    void drenCommand();
+    void stopCommand();
 };
 
 #endif // STVAPPLICATION_H

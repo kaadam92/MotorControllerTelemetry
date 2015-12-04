@@ -1,6 +1,6 @@
 #include "windowseventhandler.h"
-#include <QQmlContext>
-#include <QQmlApplicationEngine>
+
+const int replotTimerInterval = 100;
 
 WindowsEventHandler::WindowsEventHandler(QQmlContext &qmlContext)
     :qmlContext(qmlContext)
@@ -12,6 +12,13 @@ WindowsEventHandler::WindowsEventHandler(QQmlContext &qmlContext)
 //    }
 //
 //    QObject *rootObject = rootObjects[0];
+
+    plotPtr = nullptr;
+    /** Újrarajzoló időzítés inicializálása.*/
+    connect(&replotTimer, SIGNAL(timeout()),
+            this, SLOT(replotTimeout()));
+    replotTimer.setInterval(replotTimerInterval);
+    replotTimer.start();
 }
 
 
@@ -35,6 +42,30 @@ void WindowsEventHandler::driveEnableCommand()
 void WindowsEventHandler::stopCommand()
 {
     qDebug() << "Stop gomb megnyomva.";
+}
+
+void WindowsEventHandler::replot()
+{
+    if(plotPtr != nullptr)
+    {
+        if(plotPtr->graphCount() >= 2)
+        {
+            timeVec.append(QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0);
+            plotPtr->graph(0)->setData(timeVec,dataVectorMap["speed"]);
+            plotPtr->graph(1)->setData(timeVec,dataVectorMap["vrail"]);
+            plotPtr->xAxis->setRange(timeVec.first(), timeVec.last());
+            plotPtr->yAxis->setRange(-20, 55);
+            plotPtr->replot();
+        }
+        else
+        {
+            qDebug() << "Nincse elég graph, nem lehet plottolni.";
+        }
+    }
+    else
+    {
+        qDebug() << "Replottolnék én, csak még nincs hová...";
+    }
 }
 
 /*
