@@ -3,22 +3,22 @@
 /** A szerver hallgatózás az inicializáláskor megkezdődik.
  *
  */
+
 Application::Application(int argc, char *argv[])
     : QApplication(argc, argv),
       engine(),
-      //tcpServer(4444),
       tcpClient(),
       dataParser(QString("code.txt")),
       serialPort(QString("COM4"),QSerialPort::Baud9600,QSerialPort::Data8,QSerialPort::NoParity,QSerialPort::OneStop),
-      eventhandler(*engine.rootContext())
+      eventhandler(*engine.rootContext()),
+      dataLogger("log/log", "log/logstyle.txt", "log/strlog")
 {
-
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     auto rootObjects = engine.rootObjects();
     if (rootObjects.size() == 0)
     {
-        qDebug() << "HIBA: Nem sikerült létrehozni a QML környezetet.";
+        qWarning() << "HIBA: Nem sikerült létrehozni a QML környezetet.";
     }
 
     rootObject = rootObjects.first();
@@ -39,22 +39,17 @@ Application::Application(int argc, char *argv[])
     QObject::connect(rootObject, SIGNAL(driveEnableCommandCpp()),
                      this, SLOT(drenCommand()));
 
-
     QObject::connect(rootObject, SIGNAL(stopCommandCpp()),
                      &eventhandler, SLOT(stopCommand()));
     QObject::connect(rootObject, SIGNAL(stopCommandCpp()),
                      this, SLOT(stopCommand()));
 
     /** Kommunikációs signalok-slotok.*/
-//    connect(&tcpServer,SIGNAL(dataReady(QDataStream&)),
-//            &dataParser,SLOT(dataInput(QDataStream&)));
     connect(&tcpClient,SIGNAL(dataReady(QDataStream&)),
             &dataParser,SLOT(dataInput(QDataStream&)));
     connect(&serialPort,SIGNAL(dataReady(QDataStream&)),
             &dataParser,SLOT(dataInput(QDataStream&)));
 
-//    connect(&tcpServer,SIGNAL(errorOccurred(const QString&)),
-//            this,SLOT(errorHandling(const QString&)));
     connect(&tcpClient,SIGNAL(errorOccurred(const QString&)),
             this,SLOT(errorHandling(const QString&)));
     connect(&dataParser,SIGNAL(errorOccurred(const QString&)),
@@ -62,13 +57,17 @@ Application::Application(int argc, char *argv[])
     connect(&serialPort,SIGNAL(errorOccurred(const QString&)),
             this,SLOT(errorHandling(const QString&)));
 
-
-
     /** A grafikon datainak frissítésért felelős signalok-slotok.*/
     QObject::connect(&eventhandler,SIGNAL(getData(QMap<QString,QVector<double>>&)),
                      &dataParser,SLOT(getData(QMap<QString,QVector<double>>&)));
     QObject::connect(&dataParser,SIGNAL(newToPlot()),
                      &eventhandler,SLOT(replot()));
+
+    /** A loggolásért felelős jelek összekötése.*/
+    QObject::connect(&dataLogger, SIGNAL(getDataToLog()),
+                     &dataParser, SLOT(getQueues()));
+    QObject::connect(&dataParser, SIGNAL(giveQueue(QQueue<QSharedPointer<QString> >&, QQueue<QSharedPointer<QMap<QString,double> > >&, QQueue<QSharedPointer<QDateTime> >&, QQueue<QSharedPointer<QDateTime> >&)),
+                     &dataLogger, SLOT(saveToLog(QQueue<QSharedPointer<QString> >&, QQueue<QSharedPointer<QMap<QString,double> > >&, QQueue<QSharedPointer<QDateTime> >&, QQueue<QSharedPointer<QDateTime> >&)));
 
     /** Mivel a grafikont tartalmazó tab csak kattintás után jön létre,
      * ezért a rá mutató pointert csak ez után lehet létrehozni.
@@ -100,6 +99,7 @@ void Application::checkTab()
         }
     }
 }
+
 void Application::errorHandling(const QString& error)
 {
     qWarning() << "Hiba!";
@@ -129,7 +129,7 @@ void Application::hvenCommand()
 void Application::drenCommand()
 {
     sendData(dataParser.getCode("dren"), 10);
-    sendData(dataParser.getCode("vref"), 10);
+    sendData(dataParser.getCode("vref"), 35);
 }
 
 void Application::stopCommand()

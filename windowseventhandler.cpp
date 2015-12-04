@@ -18,15 +18,15 @@ WindowsEventHandler::WindowsEventHandler(QQmlContext &qmlContext)
     connect(&replotTimer, SIGNAL(timeout()),
             this, SLOT(replotTimeout()));
     replotTimer.setInterval(replotTimerInterval);
-    replotTimer.start();
+    //replotTimer.start();
 }
 
 
 
 void WindowsEventHandler::connectCommand()
 {
-
     qDebug() << "Connect gomb megnyomva.";
+    replotTimer.start();
 }
 
 void WindowsEventHandler::hvEnableCommand()
@@ -42,19 +42,27 @@ void WindowsEventHandler::driveEnableCommand()
 void WindowsEventHandler::stopCommand()
 {
     qDebug() << "Stop gomb megnyomva.";
+    replotTimer.stop();
 }
 
 void WindowsEventHandler::replot()
 {
+    timeVec.append(QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0);
     if(plotPtr != nullptr)
     {
         if(plotPtr->graphCount() >= 2)
         {
-            timeVec.append(QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0);
             plotPtr->graph(0)->setData(timeVec,dataVectorMap["speed"]);
-            plotPtr->graph(1)->setData(timeVec,dataVectorMap["vrail"]);
-            plotPtr->xAxis->setRange(timeVec.first(), timeVec.last());
-            plotPtr->yAxis->setRange(-20, 55);
+            plotPtr->graph(1)->setData(timeVec,dataVectorMap["vref"]);
+            if(timeVec.size() < 100)
+                plotPtr->xAxis->setRange(timeVec.first(), timeVec.last());
+            else
+            {
+                QVector<double>::iterator i = timeVec.end();
+                i-=100;
+                plotPtr->xAxis->setRange(*(i), timeVec.last());
+            }
+            //plotPtr->yAxis->setRange(-20, 55);
             plotPtr->replot();
         }
         else

@@ -97,7 +97,7 @@ void CustomPlotItem::updateCustomPlotSize()
 
 void CustomPlotItem::onCustomReplot()
 {
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
     update();
 }
 
@@ -137,7 +137,7 @@ void CustomPlotItem::setupQuadraticDemo( QCustomPlot* customPlot )
     customPlot->yAxis->setLabel( "y" );
     // set axes ranges, so we see all data:
     customPlot->xAxis->setRange( -1, 1 );
-    customPlot->yAxis->setRange( -1, 1 );
+    customPlot->yAxis->setRange( -20, 50 );
 
     customPlot ->setInteractions( QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iMultiSelect );
     connect( customPlot, SIGNAL( plottableClick( QCPAbstractPlottable*, QMouseEvent* ) ), this, SLOT( graphClicked( QCPAbstractPlottable* ) ) );

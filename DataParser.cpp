@@ -37,21 +37,60 @@ DataParser::DataParser (const QString& codeFilePath)
 
 void DataParser::dataInput(QDataStream& stream)
 {
-    qDebug() << "Adat érkezett"<< endl;
+    //qDebug() << "Adat érkezett"<< endl;
+
+    QMap<QString, double> tmpData = dataMap;
 
     QByteArray byteArray;
     stream >> byteArray;
-    if(byteArray.size() >= 2+sizeof(double))
-    {
-        quint16 code;
-        double value;
-        memcpy(&code, byteArray.data(), 2);
-        memcpy(&value, byteArray.data()+2, sizeof(double));
-        dataMap[codeMap.value(code)]=value;
-    }
 
+    quint16 code;
+    double value;
+    uint i=1;
+    uint k=(sizeof(quint16) + sizeof(double));
+
+    if(byteArray.size() >= k)
+    {
+        /** Első kód kinyerése. Ettől függ a további műveletek sorrendje.*/
+        memcpy(&code, byteArray.data(), sizeof(quint16));
+        /** String érkezett. Ekkor csak a string érkezhet meg, más adatot nem tartalmaz a tömb.*/
+        if(code==codeMapInv["str"])
+        {
+            QString str;
+            /** A string a két bájtos kód után található.*/
+            str = *(byteArray.data() + sizeof(quint16));
+            /** A stringre shared pointert készítek, hogy kívülről elérhető legyen és
+             * a használat után meg is szűnjön.*/
+            QSharedPointer<QString> strPtr = QSharedPointer<QString>::create(str);
+            QSharedPointer<QDateTime> timePtr = QSharedPointer<QDateTime>::create(QDateTime::currentDateTime());
+            strQueue.enqueue(strPtr);
+            strTimeQueue.enqueue(timePtr);
+        }
+        else if(code==codeMapInv["vcells"])
+        {
+            dataMap = tmpData;
+            QSharedPointer<QMap<QString, double>> dataPtr = QSharedPointer<QMap<QString, double>>::create(tmpData);
+            QSharedPointer<QDateTime> timePtr = QSharedPointer<QDateTime>::create(QDateTime::currentDateTime());
+            dataQueue.enqueue(dataPtr);
+            dataTimeQueue.enqueue(timePtr);
+        }
+        else
+        {
+            while(byteArray.size() >= i*k)
+            {
+                memcpy(&code, byteArray.data() + (i-1)*k, sizeof(quint16));
+                memcpy(&value, byteArray.data() + sizeof(quint16) + (i-1)*k, sizeof(double));
+                tmpData[codeMap.value(code)]=value;
+                i++;
+            }
+            dataMap = tmpData;
+            QSharedPointer<QMap<QString, double>> dataPtr = QSharedPointer<QMap<QString, double>>::create(tmpData);
+            QSharedPointer<QDateTime> timePtr = QSharedPointer<QDateTime>::create(QDateTime::currentDateTime());
+            dataQueue.enqueue(dataPtr);
+            dataTimeQueue.enqueue(timePtr);
+        }
+    }
     //PrintDataToDebug();
-    return;
 }
 
 void DataParser::getData(QMap<QString, QVector<double>>& cont)

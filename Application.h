@@ -17,6 +17,7 @@
 #include "windowseventhandler.h"
 #include "qcustomplot.h"
 #include "customplotitem.h"
+#include "DataLogger.h"
 
 /**
  * @brief Alkalmazás osztály. A main() példányosítja és indítja el.
@@ -34,11 +35,11 @@ public:
 
 private:
     QQmlApplicationEngine engine;
-//    CommunicationTcpSocketServer tcpServer;
     CommunicationTcpSocketClient tcpClient;
     DataParser dataParser;
     CommunicationSerialPort serialPort;
     WindowsEventHandler eventhandler;
+    DataLogger dataLogger;
 
     QObject *rootObject;
     QCustomPlot* customPlotPtr;
