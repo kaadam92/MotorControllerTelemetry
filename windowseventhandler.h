@@ -60,5 +60,6 @@ private:
     QCustomPlot* plotPtr;
 
 
+
 };
 
