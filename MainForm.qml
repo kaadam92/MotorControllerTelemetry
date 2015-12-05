@@ -16,7 +16,6 @@ Item {
     function selectColor(messageText, color)
     {
         selectedColor = color;
-        drawingCanvas.requestPaint();
         eventLogModel.append( { message: messageText, colorCode: color } );
         console.log("selectColor(" + messageText + ", " + color + ")");
     }
@@ -338,41 +337,19 @@ Item {
                                 message: "Indul a program..."
                                 colorCode: "grey"
                             }
-                            ListElement {
-                                message: "Pirossal kezdünk"
-                                colorCode: "red"
-                            }
-                            ListElement {
-                                message: "Pirossal kezdünk"
-                                colorCode: "red"
-                            }
+
                             ListElement {
                                 message: "ERROR: BMS_ERR_Short_Circuit"
                                 colorCode: "red"
+
                             }
-                            ListElement {
-                                message: "Pirossal kezdünk"
-                                colorCode: "orange"
-                            }
-                            ListElement {
-                                message: "Pirossal kezdünk"
-                                colorCode: "green"
-                            }
-                            ListElement {
-                                message: "Pirossal kezdünk"
-                                colorCode: "green"
-                            }
+                        }
+
+                        onCountChanged: {
+                            stateHistoryList.currentIndex = stateHistoryList.count - 1;
                         }
                     }
 
-
-
-                    // Eseménykezelő, az elemek darabszámának változása esetén a kijelölést
-                    //  a legalsó elemre viszi. Ezzel oldja meg, hogy folyamatosan scrollozódjon
-                    //  a lista és a legutoló elem mindig látható legyen.
-                    onCountChanged: {
-                        stateHistoryList.currentIndex = stateHistoryList.count - 1;
-                    }
                 }
             }
 

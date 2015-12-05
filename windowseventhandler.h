@@ -28,7 +28,12 @@ public:
     //void ConnectQmlSignals(QObject *rootObject);
 
     /** A plot pointert lehet beállítani vele.*/
-    void setPtr(QCustomPlot* ptr){plotPtr = ptr;}
+    void setPlotPtr(QCustomPlot* ptr){plotPtr = ptr;}
+
+    void setMainWindowPtr(QObject* ptr);
+
+    /** Az ablak aljában található logra ír */
+    void logPost(QVariant text, QVariant color);
 
 signals:
     /** Hatására meg kell történjen az új adatok betöltése a paraméterként
@@ -58,6 +63,7 @@ private:
     QTimer replotTimer;
     /** Ez a pointer mutat a QML felületen létrejövő grafikonra.*/
     QCustomPlot* plotPtr;
+    QObject* mainWindowPtr;
 
 
 

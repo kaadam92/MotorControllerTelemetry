@@ -24,6 +24,9 @@ Application::Application(int argc, char *argv[])
     rootObject = rootObjects.first();
     customPlotPtr = (QCustomPlot*)rootObject->findChild<QObject*>("customPlot");
 
+    auto mainWindowPtr = rootObject->findChild<QObject*>("MainWindow");
+    eventhandler.setMainWindowPtr(mainWindowPtr);
+
     QObject::connect(rootObject, SIGNAL(connectCommandCpp()),
                      &eventhandler, SLOT(connectCommand()));
     QObject::connect(rootObject, SIGNAL(connectCommandCpp()),
@@ -91,7 +94,7 @@ void Application::checkTab()
         if(customPlotPtr != nullptr)
         {
             qDebug() << "Megvan a grafikon tab!! Köszi a klikket!";
-            eventhandler.setPtr(customPlotPtr);
+            eventhandler.setPlotPtr(customPlotPtr);
             checkTabTimer.stop();
         }
         else
