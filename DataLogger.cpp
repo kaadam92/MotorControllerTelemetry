@@ -15,8 +15,10 @@ DataLogger::DataLogger(const QString& logFilePath, const QString& logFileStylePa
     : logFile(logFilePath), logFileStyle(logFileStylePath), strLogFile(strLogFilePath)
 {
     /** A fájlnevet megtoldom az aktuális időbélyeggel, így egyedi lesz a fájlnév.*/
-    logFile.setFileName(logFilePath+QDateTime::currentDateTime().toString("_yyyy_MM_dd_hh_mm_ss"));
-    strLogFile.setFileName(strLogFilePath+QDateTime::currentDateTime().toString("_yyyy_MM_dd_hh_mm_ss"));
+    QStringList pathList = logFilePath.split('.');
+    logFile.setFileName(pathList[0]+QDateTime::currentDateTime().toString("_yyyy_MM_dd_hh_mm_ss")+'.'+pathList[1]);
+    pathList = strLogFilePath.split('.');
+    strLogFile.setFileName(pathList[0]+QDateTime::currentDateTime().toString("_yyyy_MM_dd_hh_mm_ss")+'.'+pathList[1]);
 
     printLogFileHeader();
 
