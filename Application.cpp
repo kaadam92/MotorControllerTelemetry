@@ -11,7 +11,7 @@ Application::Application(int argc, char *argv[])
       dataParser(QString("code.txt")),
       serialPort(QString("COM4"),QSerialPort::Baud9600,QSerialPort::Data8,QSerialPort::NoParity,QSerialPort::OneStop),
       eventhandler(*engine.rootContext()),
-      dataLogger("log/log", "log/logstyle.txt", "log/strlog")
+      dataLogger("log/log.csv", "log/logstyle.txt", "log/strlog.csv")
 {
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

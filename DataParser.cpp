@@ -1,5 +1,6 @@
 #include "DataParser.h"
 
+const quint8 cellnum_def = 12;
 
 DataParser::DataParser (const QString& codeFilePath)
     :codeFile(codeFilePath)
@@ -58,7 +59,7 @@ void DataParser::dataInput(QDataStream& stream)
         {
             QString str;
             /** A string a két bájtos kód után található.*/
-            str = *(byteArray.data() + sizeof(quint16));
+            str = (byteArray.data() + sizeof(quint16));
             /** A stringre shared pointert készítek, hogy kívülről elérhető legyen és
              * a használat után meg is szűnjön.*/
             QSharedPointer<QString> strPtr = QSharedPointer<QString>::create(str);
@@ -68,6 +69,16 @@ void DataParser::dataInput(QDataStream& stream)
         }
         else if(code==codeMapInv["vcells"])
         {
+            i = 1;
+            k = sizeof(double);
+            QString strcode("cell");
+            while(byteArray.size() >= sizeof(quint16) + i*sizeof(double))
+            {
+                memcpy(&value, byteArray.data() + sizeof(quint16) + (i-1)*sizeof(double), sizeof(double));
+                tmpData[strcode.append(QString::number(i))]=value;
+                i++;
+            }
+
             dataMap = tmpData;
             QSharedPointer<QMap<QString, double>> dataPtr = QSharedPointer<QMap<QString, double>>::create(tmpData);
             QSharedPointer<QDateTime> timePtr = QSharedPointer<QDateTime>::create(QDateTime::currentDateTime());

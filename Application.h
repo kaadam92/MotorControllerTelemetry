@@ -50,6 +50,7 @@ private:
 
 private slots:
     void checkTab();
+
 public slots:
     void errorHandling(const QString&);
     void connectToServer();

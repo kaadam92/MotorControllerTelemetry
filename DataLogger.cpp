@@ -91,6 +91,8 @@ void DataLogger::saveToLog(QQueue<QSharedPointer<QString>>& strQueue, QQueue<QSh
         qDebug() << "STR NEM ÜRES.";
         QSharedPointer<QDateTime> timePtr = strTimeQueue.dequeue();
         QSharedPointer<QString> strPtr = strQueue.dequeue();
+
+        qDebug() << *strPtr;
         strLogFileStream << timePtr->toString(dateTimeFormat) << "\t" << *(strPtr) << endl;
         timePtr.clear();
         strPtr.clear();
@@ -109,6 +111,8 @@ void DataLogger::saveToLog(QQueue<QSharedPointer<QString>>& strQueue, QQueue<QSh
             logFileStream << ',' << (*dataPtr)[*i];
         }
         logFileStream << endl;
+        timePtr.clear();
+        dataPtr.clear();
     }
 
     logFile.close();
