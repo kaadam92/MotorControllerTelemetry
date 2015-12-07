@@ -47,10 +47,9 @@ void DataParser::dataInput(QDataStream& stream)
 
     quint16 code;
     double value;
-    uint i=1;
-    uint k=(sizeof(quint16) + sizeof(double));
+    uint readBytes = 0;
 
-    if(byteArray.size() >= k)
+    if(byteArray.size() >= sizeof(quint16))
     {
         /** Első kód kinyerése. Ettől függ a további műveletek sorrendje.*/
         memcpy(&code, byteArray.data(), sizeof(quint16));
@@ -67,6 +66,7 @@ void DataParser::dataInput(QDataStream& stream)
             strQueue.enqueue(strPtr);
             strTimeQueue.enqueue(timePtr);
         }
+        /*
         else if(code==codeMapInv["vcells"])
         {
             i = 1;
@@ -84,15 +84,36 @@ void DataParser::dataInput(QDataStream& stream)
             QSharedPointer<QDateTime> timePtr = QSharedPointer<QDateTime>::create(QDateTime::currentDateTime());
             dataQueue.enqueue(dataPtr);
             dataTimeQueue.enqueue(timePtr);
-        }
+        }*/
+        /** Más esetben adat jött.*/
         else
         {
-            while(byteArray.size() >= i*k)
+            while(byteArray.size() >= readBytes)
             {
-                memcpy(&code, byteArray.data() + (i-1)*k, sizeof(quint16));
-                memcpy(&value, byteArray.data() + sizeof(quint16) + (i-1)*k, sizeof(double));
-                tmpData[codeMap.value(code)]=value;
-                i++;
+                memcpy(&code, byteArray.data() + readBytes, sizeof(quint16));
+                readBytes += sizeof(quint16);
+                /** Ha a cellafeszültségek jönnek, más eljárásra van szükség:
+                 *  a kód után a cellafeszültségek jönnek sorban.*/
+                if(code == codeMapInv["vcells"])
+                {
+                    uint vcellByte = readBytes;
+                    uint cellnum = 1;
+                    QString strcode("cell");
+                    while(cellnum_def*sizeof(double) > readBytes-vcellByte)
+                    {
+                        memcpy(&value, byteArray.data() + readBytes, sizeof(double));
+                        readBytes += sizeof(double);
+                        tmpData[strcode+QString::number(cellnum)]=value;
+                        cellnum++;
+                    }
+                }
+                /** Egyébként sima adat jön: double érték.*/
+                else
+                {
+                    memcpy(&value, byteArray.data() + readBytes, sizeof(double));
+                    readBytes += sizeof(double);
+                    tmpData[codeMap.value(code)]=value;
+                }
             }
             dataMap = tmpData;
             QSharedPointer<QMap<QString, double>> dataPtr = QSharedPointer<QMap<QString, double>>::create(tmpData);
