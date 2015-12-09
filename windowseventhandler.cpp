@@ -74,7 +74,7 @@ void WindowsEventHandler::driveEnableCommand()
 void WindowsEventHandler::stopCommand()
 {
     qDebug() << "Stop gomb megnyomva.";
-    //replotTimer.stop();
+    replotTimer.stop();
 }
 
 void WindowsEventHandler::replot()

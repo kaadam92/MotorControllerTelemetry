@@ -56,6 +56,9 @@ void Application::initQML()
                      &eventhandler, SLOT(stopCommand()));
     QObject::connect(rootObject, SIGNAL(stopCommandCpp()),
                      this, SLOT(stopCommand()));
+
+    QObject::connect(rootObject, SIGNAL(vdemandSliderChanged(QVariant )),
+                     this, SLOT(vdemandChanged(QVariant )));
 }
 
 void Application::makeConnections()
@@ -159,15 +162,20 @@ void Application::connectToServer()
 void Application::hvenCommand()
 {
     sendData(dataParser.getCode("state"), 10);
+
 }
 
 void Application::drenCommand()
 {
     sendData(dataParser.getCode("state"), 20);
-    sendData(dataParser.getCode("vref"), 35);
 }
 
 void Application::stopCommand()
 {
     sendData(dataParser.getCode("state"), 0);
+}
+
+void Application::vdemandChanged(QVariant vdemand){
+    qDebug() << "Slider Cppből: " << vdemand.toDouble();
+    sendData(dataParser.getCode("vref"), vdemand.toDouble());
 }

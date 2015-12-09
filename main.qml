@@ -14,11 +14,13 @@ ApplicationWindow {
     // Signalok, melyeket a C++ oldalon fogunk C++ slotokhoz kötni
     //  az StvApplication osztály konstruktorában.
     objectName: "ApplicationWindow"
+    id: rootwindow
 
     signal connectCommandCpp()
     signal hvEnableCommandCpp()
     signal driveEnableCommandCpp()
     signal stopCommandCpp()
+    signal vdemandSliderChanged(var vdemand)
 
     // Az ablak menuBar tulajdonságának értékül adunk egy MenuBar példányt, amit itt rakunk össze.
     menuBar: MenuBar {

@@ -40,7 +40,7 @@ Item {
         // A nyomógombokat oszlopba rendezzük
         ColumnLayout {
             id: columnLayout1
-            anchors.bottomMargin: 109
+            anchors.bottomMargin: 0
             // Az oszlop kitölti a szülőt, vagyis a commandsGB-t.
             anchors.fill: parent
 
@@ -140,109 +140,127 @@ Item {
                 anchors.leftMargin: 0
                 onClicked: stopCommand()
             }
+
+            Slider {
+                id: vdemand
+                height: 50
+                stepSize: 1
+                maximumValue: 40
+                anchors.bottomMargin: 10
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.horizontalCenter: commandsGB.horizontalCenter
+                onValueChanged: {
+                    console.log("Slider value :" + vdemand.value)
+                    rootwindow.vdemandSliderChanged(vdemand.value)
+                }
+            }
+
+
         }
     }
 
     // Aktuális értékek elemcsoportja
 
-        // Oszlopba rendezett további elemek
-        TabView{
-            objectName: "graphTabView"
-            height: 486
-            currentIndex: 2
-            frameVisible: true
-            tabsVisible: true
+    // Oszlopba rendezett további elemek
+    TabView{
+        objectName: "graphTabView"
+        height: 486
+        currentIndex: 0
+        frameVisible: true
+        tabsVisible: true
 
-            id: currentValuesGB
-            anchors.bottom: graphGB.top
-            anchors.bottomMargin: 0
-            anchors.leftMargin: 6
-            anchors.topMargin: 0
-            anchors.right: parent.right
-            anchors.rightMargin: -6
-            anchors.left : commandsGB.right
-            anchors.top : parent.top
+        id: mainView
+        anchors.bottom: logWindow.top
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 6
+        anchors.topMargin: 0
+        anchors.right: parent.right
+        anchors.rightMargin: -6
+        anchors.left : commandsGB.right
+        anchors.top : parent.top
 
 
-            Tab{
-                title:"Pillanatnyi értékek"
+        Tab{
+            title:"Pillanatnyi értékek"
 
-                ColumnLayout {
-                    width: 351
-                    anchors.bottomMargin: 259
-                    // Felfelé, lefelé és balra a szülő széléhez illeszkedik. Jobbra nem, mert
-                    //  széthúzni felesleges őket.
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
-                    // Sima szövegek (Text elemek), amiknek az értéke egy a C++ oldalon definiált currentState
-                    //  értékétől függ. (Ha az értéke null, akkor "?" jelenik meg.)
-                    // A currentState-et a MainWindowsEventHandling::historyChanged metódus regisztrálja be, hogy
-                    //  látható legyen a QML oldalról is. (Hivatkozás a RobotStateHistory::currentState-re.)
-                    Text { text: " Current: " ;font.bold: true ;font.pointSize: 14}
-                    Text { text: " Speed: "  ;font.bold: true ;font.pointSize: 14}
-                    Text { text: " Torque: "  ;font.bold: true ;font.pointSize: 14}
-                    Text { text: " Rail Voltage: " ;font.bold: true ;font.pointSize: 14 }
-                    Text { text: " Accu voltage: " ;font.bold: true ;font.pointSize: 14 }
-                    Text { text: " State of Charge: " ;font.bold: true ;font.pointSize: 14 }
+            ColumnLayout {
+                width: 351
+                anchors.bottomMargin: 259
+                // Felfelé, lefelé és balra a szülő széléhez illeszkedik. Jobbra nem, mert
+                //  széthúzni felesleges őket.
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                // Sima szövegek (Text elemek), amiknek az értéke egy a C++ oldalon definiált currentState
+                //  értékétől függ. (Ha az értéke null, akkor "?" jelenik meg.)
+                // A currentState-et a MainWindowsEventHandling::historyChanged metódus regisztrálja be, hogy
+                //  látható legyen a QML oldalról is. (Hivatkozás a RobotStateHistory::currentState-re.)
+                Text { text: " Current: " ;font.bold: true ;font.pointSize: 14}
+                Text { text: " Speed: "  ;font.bold: true ;font.pointSize: 14}
+                Text { text: " Torque: "  ;font.bold: true ;font.pointSize: 14}
+                Text { text: " Rail Voltage: " ;font.bold: true ;font.pointSize: 14 }
+                Text { text: " Accu voltage: " ;font.bold: true ;font.pointSize: 14 }
+                Text { text: " State of Charge: " ;font.bold: true ;font.pointSize: 14 }
+            }
+        }
+
+
+        Tab {
+            objectName: "graphTab"
+            title: "Grafikon"
+            Item {
+
+                objectName: "graphTabItem"
+                CustomPlotItem {
+
+                    objectName: "customPlot"
+                    id: customPlot
+                    anchors.fill: parent
+
+                    Component.onCompleted: initCustomPlot()
+
                 }
             }
+        }
 
+        Tab {
+            id: battTab
+            title: "Battery"
 
-            Tab {
-                   objectName: "graphTab"
-                   title: "Grafikon"
-                   Item {
+            BatteryView{
+                id: battery
+                anchors.fill: parent
 
-                       objectName: "graphTabItem"
-                           CustomPlotItem {
-
-                               objectName: "customPlot"
-                               id: customPlot
-                               anchors.fill: parent
-
-                               Component.onCompleted: initCustomPlot()
-
-                           }
-                   }
-               }
-
-            Tab {
-                   id: battTab
-                   title: "Battery"
-
-                   BatteryView{
-                       id: battery
-                       anchors.fill: parent
-
-                   }
-
-               }
-
-
-
-            style: TabViewStyle {
-                frameOverlap: 0
-                tab: Rectangle {
-                    color: styleData.selected ? "grey" :"lightgrey"
-                    border.color:  "#888"
-                    implicitWidth: Math.max(text.width + 4, 100)
-                    implicitHeight: 25
-                    radius: 1
-                    Text {
-                        id: text
-                        anchors.centerIn: parent
-                        text: styleData.title
-                        color: styleData.selected ? "white" : "black"
-                    }
-                }
-                frame: Rectangle { color: "white" }
             }
 
+        }
 
 
 
-}
+        style: TabViewStyle {
+            frameOverlap: 0
+            tab: Rectangle {
+                color: styleData.selected ? "grey" :"lightgrey"
+                border.color:  "#888"
+                implicitWidth: Math.max(text.width + 4, 100)
+                implicitHeight: 25
+                radius: 1
+                Text {
+                    id: text
+                    anchors.centerIn: parent
+                    text: styleData.title
+                    color: styleData.selected ? "white" : "black"
+                }
+            }
+            frame: Rectangle { color: "white" }
+        }
+
+
+
+
+    }
 
 
 
@@ -263,7 +281,7 @@ Item {
 
     // Az állapot lista és a grafikon GroupBoxa.
     GroupBox {
-        id: graphGB
+        id: logWindow
         title: qsTr("Event Log")
         // Oldalra és lefelé kitölti a szülőt.
         anchors.right: parent.right
