@@ -309,7 +309,6 @@ Item {
 
                     //model: historyModel
 
-
                     ListView {
                         id: eventLog
                         anchors.fill: parent
@@ -350,7 +349,7 @@ Item {
                         }
 
                         onCountChanged: {
-                            stateHistoryList.currentIndex = stateHistoryList.count - 1;
+                            incrementCurrentIndex();
                         }
                     }
 
