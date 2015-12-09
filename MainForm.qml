@@ -149,6 +149,7 @@ Item {
         TabView{
             objectName: "graphTabView"
             height: 486
+            currentIndex: 2
             frameVisible: true
             tabsVisible: true
 
@@ -210,65 +211,13 @@ Item {
             Tab {
                    id: battTab
                    title: "Battery"
-                   ColumnLayout{
-                       anchors.right: parent.right
-                       anchors.rightMargin: 0
-                       anchors.left: parent.left
-                       anchors.leftMargin: 0
-                       anchors.bottom: parent.bottom
-                       anchors.bottomMargin: 0
-                       Rectangle{
-                           id: bar1
-                           width: 50
-                           height: 10
-                           color: "#888"
-                       }
-                       RowLayout{
-                           id: batteryBars
-                           anchors.right: parent.right
-                           anchors.rightMargin: 0
-                           anchors.left: parent.left
-                           anchors.leftMargin: 0
-                           anchors.bottom: parent.bottom
-                           anchors.bottomMargin: 0
 
-
-
-
-                               Rectangle{
-                                   width: 50
-                                   height: 10
-                                   color: "#888"
-                               }
-
-
-                               Rectangle{
-                                   width: 50
-                                   height: 10
-                                   color: "#888"
-                               }
-
-
-                               Rectangle{
-                                   width: 50
-                                   height: 10
-                                   color: "#888"
-                               }
-
-
-                               Rectangle{
-                                   width: 50
-                                   height: 10
-                                   color: "#888"
-                               }
-
-
-                           spacing: 5
-                       }
-                   }
-                   ColumnLayout{
+                   BatteryView{
+                       id: battery
+                       anchors.fill: parent
 
                    }
+
                }
 
 
