@@ -189,6 +189,7 @@ Item {
 
 
             Tab {
+                z: 1
                    objectName: "graphTab"
                    title: "Grafikon"
                    Item {

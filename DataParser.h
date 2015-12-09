@@ -44,6 +44,7 @@ signals:
     void newToPlot();
     void giveQueue(QQueue<QSharedPointer<QString>>&, QQueue<QSharedPointer<QMap<QString, double>>>&,
                    QQueue<QSharedPointer<QDateTime>>&, QQueue<QSharedPointer<QDateTime>>&);
+    void newString(QSharedPointer<QString>);
 
 public slots:
     /** Ide lehet bekötni a kommunikációs dataReady signalokat.*/

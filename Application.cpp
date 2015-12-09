@@ -66,6 +66,10 @@ Application::Application(int argc, char *argv[])
     QObject::connect(&dataParser,SIGNAL(newToPlot()),
                      &eventhandler,SLOT(replot()));
 
+    /** GUI string kijelzéshez tartozó signalok-slotok.*/
+    QObject::connect(&dataParser, SIGNAL(newString(QSharedPointer<QString>)),
+                     &eventhandler, SLOT(stringMessage(QSharedPointer<QString>)));
+
     /** A loggolásért felelős jelek összekötése.*/
     QObject::connect(&dataLogger, SIGNAL(getDataToLog()),
                      &dataParser, SLOT(getQueues()));
@@ -126,16 +130,22 @@ void Application::connectToServer()
 
 void Application::hvenCommand()
 {
+    sendData(dataParser.getCode("dren"), 0);
     sendData(dataParser.getCode("hven"), 10);
+    sendData(dataParser.getCode("stop"), 0);
 }
 
 void Application::drenCommand()
 {
     sendData(dataParser.getCode("dren"), 10);
+    sendData(dataParser.getCode("hven"), 10);
+    sendData(dataParser.getCode("stop"), 0);
     sendData(dataParser.getCode("vref"), 35);
 }
 
 void Application::stopCommand()
 {
+    sendData(dataParser.getCode("dren"), 0);
+    sendData(dataParser.getCode("hven"), 0);
     sendData(dataParser.getCode("stop"), 10);
 }

@@ -38,6 +38,12 @@ void WindowsEventHandler::logPost(QVariant text, QVariant color){
      mainWindowPtr = ptr;
  }
 
+void WindowsEventHandler::stringMessage(QSharedPointer<QString> strPtr)
+{
+    logPost(*strPtr, "blue");
+    strPtr.clear();
+}
+
 void WindowsEventHandler::connectCommand()
 {
     logPost("Csak sikerült, posztoló függvényből.","red");
@@ -58,7 +64,7 @@ void WindowsEventHandler::driveEnableCommand()
 void WindowsEventHandler::stopCommand()
 {
     qDebug() << "Stop gomb megnyomva.";
-    replotTimer.stop();
+    //replotTimer.stop();
 }
 
 void WindowsEventHandler::replot()

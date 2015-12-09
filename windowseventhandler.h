@@ -41,6 +41,7 @@ signals:
     void getData(QMap<QString, QVector<double>>&);
 
 public slots:
+    void stringMessage(QSharedPointer<QString>);
     void connectCommand();
     void stopCommand();
     void driveEnableCommand();

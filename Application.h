@@ -1,6 +1,4 @@
 #pragma once
-#ifndef STVAPPLICATION_H
-#define STVAPPLICATION_H
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QString>
@@ -9,6 +7,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QMap>
+#include <QSharedPointer>
 #include "DataParser.h"
 #include "mainwindow.h"
 #include "Communication/CommunicationTcpSocketServer.h"
@@ -58,5 +57,3 @@ public slots:
     void drenCommand();
     void stopCommand();
 };
-
-#endif // STVAPPLICATION_H

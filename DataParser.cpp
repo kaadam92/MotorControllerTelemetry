@@ -65,6 +65,7 @@ void DataParser::dataInput(QDataStream& stream)
             QSharedPointer<QDateTime> timePtr = QSharedPointer<QDateTime>::create(QDateTime::currentDateTime());
             strQueue.enqueue(strPtr);
             strTimeQueue.enqueue(timePtr);
+            emit newString(QSharedPointer<QString>(strPtr));
         }
         /** Más esetben adat jött.*/
         else
