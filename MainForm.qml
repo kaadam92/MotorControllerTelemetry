@@ -197,12 +197,12 @@ Item {
                 //  értékétől függ. (Ha az értéke null, akkor "?" jelenik meg.)
                 // A currentState-et a MainWindowsEventHandling::historyChanged metódus regisztrálja be, hogy
                 //  látható legyen a QML oldalról is. (Hivatkozás a RobotStateHistory::currentState-re.)
-                Text { text: " Current: " ;font.bold: true ;font.pointSize: 14}
-                Text { text: " Speed: "  ;font.bold: true ;font.pointSize: 14}
-                Text { text: " Torque: "  ;font.bold: true ;font.pointSize: 14}
-                Text { text: " Rail Voltage: " ;font.bold: true ;font.pointSize: 14 }
-                Text { text: " Accu voltage: " ;font.bold: true ;font.pointSize: 14 }
-                Text { text: " State of Charge: " ;font.bold: true ;font.pointSize: 14 }
+                Text { text: " Current: " + curr.data.toFixed(2) + " A" ;font.bold: true ;font.pointSize: 14}
+                Text { text: " Speed: " + (speed.data*3.6).toFixed(2) + " km/h" ;font.bold: true ;font.pointSize: 14}
+                Text { text: " Torque: " + torq.data.toFixed(2) + " Nm"  ;font.bold: true ;font.pointSize: 14}
+                Text { text: " Rail Voltage: " + vrail.data.toFixed(2) + " V" ;font.bold: true ;font.pointSize: 14 }
+                Text { text: " Accu voltage: " + vacc.data.toFixed(2) + " V"  ;font.bold: true ;font.pointSize: 14 }
+                Text { text: " Charge left: " + capac.data.toFixed(2) + " Ah"  ;font.bold: true ;font.pointSize: 14 }
             }
         }
 

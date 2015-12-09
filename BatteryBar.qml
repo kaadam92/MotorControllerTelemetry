@@ -32,7 +32,7 @@ Row{
 
     Rectangle {
         id: rectangle1
-        width: 180*((cellvoltage-2000)/(cellvoltagemax-2000))
+        width: 180*(((cellvoltage*1000.0)-2000)/(cellvoltagemax-2000))
         height: 25
         color: "#2fde5f"
         anchors.left: label1.right
@@ -44,7 +44,7 @@ Row{
 
     Text {
         id: text1
-        text: qsTr((cellvoltage/1000).toFixed(4) + " V")
+        text: qsTr((cellvoltage).toFixed(4) + " V")
         anchors.right: parent.right
         anchors.rightMargin: 0
         anchors.verticalCenter: parent.verticalCenter
