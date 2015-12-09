@@ -130,22 +130,16 @@ void Application::connectToServer()
 
 void Application::hvenCommand()
 {
-    sendData(dataParser.getCode("dren"), 0);
-    sendData(dataParser.getCode("hven"), 10);
-    sendData(dataParser.getCode("stop"), 0);
+    sendData(dataParser.getCode("state"), 10);
 }
 
 void Application::drenCommand()
 {
-    sendData(dataParser.getCode("dren"), 10);
-    sendData(dataParser.getCode("hven"), 10);
-    sendData(dataParser.getCode("stop"), 0);
+    sendData(dataParser.getCode("state"), 20);
     sendData(dataParser.getCode("vref"), 35);
 }
 
 void Application::stopCommand()
 {
-    sendData(dataParser.getCode("dren"), 0);
-    sendData(dataParser.getCode("hven"), 0);
-    sendData(dataParser.getCode("stop"), 10);
+    sendData(dataParser.getCode("state"), 0);
 }

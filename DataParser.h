@@ -37,7 +37,6 @@ private:
     QQueue<QSharedPointer<QDateTime>> strTimeQueue;
     QQueue<QSharedPointer<QDateTime>> dataTimeQueue;
 
-
 signals:
     void errorOccurred(const QString&);
     /** Jelzi, ha új adatot lehet kirajzolni a grafikus felületre.*/
