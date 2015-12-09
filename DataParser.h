@@ -20,6 +20,7 @@ public:
 
     void PrintDataToDebug();
     quint16 getCode(const QString& str){return codeMapInv[str];}
+    const QMap<quint16, QString>& getCodeMap(){return codeMap;}
     QQueue<QSharedPointer<QString>>& getStrQueue(){return strQueue;}
 
 private:

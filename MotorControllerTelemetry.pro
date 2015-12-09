@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     customplotitem.cpp \
     qcustomplot.cpp \
     windowseventhandler.cpp \
-    DataLogger.cpp
+    DataLogger.cpp \
+    QMLData.cpp
 
 
 RESOURCES += qml.qrc
@@ -51,6 +52,7 @@ HEADERS  += mainwindow.h \
     customplotitem.h \
     qcustomplot.h \
     windowseventhandler.h \
-    DataLogger.h
+    DataLogger.h \
+    QMLData.h
 
 FORMS    += mainwindow.ui

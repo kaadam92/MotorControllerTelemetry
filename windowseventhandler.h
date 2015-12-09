@@ -23,7 +23,7 @@ class WindowsEventHandler : public QObject
 public:
     WindowsEventHandler(QQmlContext &qmlContext);
 
-    ~WindowsEventHandler() = default;
+    //~WindowsEventHandler() = default;
 
     //void ConnectQmlSignals(QObject *rootObject);
 

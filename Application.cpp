@@ -13,9 +13,19 @@ Application::Application(int argc, char *argv[])
       eventhandler(*engine.rootContext()),
       dataLogger("log/log.csv", "log/logstyle.txt", "log/strlog.csv")
 {
+    generateQMLData();
+    initQML();
+    makeConnections();
+    initTimers();
+}
+
+void Application::initQML()
+{
+    engine.rootContext()->setContextProperty("eventhandler", &eventhandler);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     auto rootObjects = engine.rootObjects();
+
     if (rootObjects.size() == 0)
     {
         qWarning() << "HIBA: Nem sikerült létrehozni a QML környezetet.";
@@ -46,7 +56,10 @@ Application::Application(int argc, char *argv[])
                      &eventhandler, SLOT(stopCommand()));
     QObject::connect(rootObject, SIGNAL(stopCommandCpp()),
                      this, SLOT(stopCommand()));
+}
 
+void Application::makeConnections()
+{
     /** Kommunikációs signalok-slotok.*/
     connect(&tcpClient,SIGNAL(dataReady(QDataStream&)),
             &dataParser,SLOT(dataInput(QDataStream&)));
@@ -75,7 +88,10 @@ Application::Application(int argc, char *argv[])
                      &dataParser, SLOT(getQueues()));
     QObject::connect(&dataParser, SIGNAL(giveQueue(QQueue<QSharedPointer<QString> >&, QQueue<QSharedPointer<QMap<QString,double> > >&, QQueue<QSharedPointer<QDateTime> >&, QQueue<QSharedPointer<QDateTime> >&)),
                      &dataLogger, SLOT(saveToLog(QQueue<QSharedPointer<QString> >&, QQueue<QSharedPointer<QMap<QString,double> > >&, QQueue<QSharedPointer<QDateTime> >&, QQueue<QSharedPointer<QDateTime> >&)));
+}
 
+void Application::initTimers()
+{
     /** Mivel a grafikont tartalmazó tab csak kattintás után jön létre,
      * ezért a rá mutató pointert csak ez után lehet létrehozni.
      * Minden timer timeoutkor megvizsgáljuk, hogy lekérhető-e a pointer.*/
@@ -83,6 +99,18 @@ Application::Application(int argc, char *argv[])
                      this,SLOT(checkTab()));
     checkTabTimer.setInterval(1000);
     checkTabTimer.start();
+}
+
+void Application::generateQMLData()
+{
+    QMap<quint16, QString> codeMap = dataParser.getCodeMap();
+    QMap<quint16, QString>::iterator iter;
+
+    for(iter = codeMap.begin(); iter != codeMap.end(); ++iter)
+    {
+        QMLData tmpData(0.0);
+        qmlDataMap[iter.value()] = tmpData;
+    }
 }
 
 void Application::checkTab()

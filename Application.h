@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QMap>
 #include <QSharedPointer>
+#include <QtGlobal>
 #include "DataParser.h"
 #include "mainwindow.h"
 #include "Communication/CommunicationTcpSocketServer.h"
@@ -17,6 +18,7 @@
 #include "qcustomplot.h"
 #include "customplotitem.h"
 #include "DataLogger.h"
+#include "QMLData.h"
 
 /**
  * @brief Alkalmazás osztály. A main() példányosítja és indítja el.
@@ -40,12 +42,20 @@ private:
     WindowsEventHandler eventhandler;
     DataLogger dataLogger;
 
+    QMap<QString,QMLData> qmlDataMap;
+
     QObject *rootObject;
     QCustomPlot* customPlotPtr;
 
     QTimer checkTabTimer;
 
+
     void sendData(quint16 code, double value);
+    void initQML();
+    void makeConnections();
+    void initTimers();
+    void generateQMLData();
+
 
 private slots:
     void checkTab();
