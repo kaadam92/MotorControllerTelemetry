@@ -178,17 +178,18 @@ Item {
                     //  értékétől függ. (Ha az értéke null, akkor "?" jelenik meg.)
                     // A currentState-et a MainWindowsEventHandling::historyChanged metódus regisztrálja be, hogy
                     //  látható legyen a QML oldalról is. (Hivatkozás a RobotStateHistory::currentState-re.)
-                    //Text { text: " Állapot: " + (currentState!=null ? currentState.statusName : "?") }
-                    //Text { text: " Idő: " + (currentState!=null ? currentState.timestamp : "?") }
-                    // Text { text: " X: " + (currentState!=null ? currentState.x.toFixed(3) : "?") }
-                    //Text { text: " V: " + (currentState!=null ? currentState.v.toFixed(3) : "?") }
-                    //Text { text: " A: " + (currentState!=null ? currentState.a.toFixed(3) : "?") }
-                    //Text { text: " Lámpa: " + (currentState!=null ? currentState.light.toString() : "?") }
+                    Text { text: " Current: " ;font.bold: true ;font.pointSize: 14}
+                    Text { text: " Speed: "  ;font.bold: true ;font.pointSize: 14}
+                    Text { text: " Torque: "  ;font.bold: true ;font.pointSize: 14}
+                    Text { text: " Rail Voltage: " ;font.bold: true ;font.pointSize: 14 }
+                    Text { text: " Accu voltage: " ;font.bold: true ;font.pointSize: 14 }
+                    Text { text: " State of Charge: " ;font.bold: true ;font.pointSize: 14 }
                 }
             }
 
 
             Tab {
+                   id: graphTab
                    objectName: "graphTab"
                    title: "Grafikon"
                    Item {
@@ -207,14 +208,69 @@ Item {
                }
 
             Tab {
-                   title: "Green"
-                   Rectangle { color: "Green" }
+                   id: battTab
+                   title: "Battery"
+                   ColumnLayout{
+                       anchors.right: parent.right
+                       anchors.rightMargin: 0
+                       anchors.left: parent.left
+                       anchors.leftMargin: 0
+                       anchors.bottom: parent.bottom
+                       anchors.bottomMargin: 0
+                       Rectangle{
+                           id: bar1
+                           width: 50
+                           height: 10
+                           color: "#888"
+                       }
+                       RowLayout{
+                           id: batteryBars
+                           anchors.right: parent.right
+                           anchors.rightMargin: 0
+                           anchors.left: parent.left
+                           anchors.leftMargin: 0
+                           anchors.bottom: parent.bottom
+                           anchors.bottomMargin: 0
+
+
+
+
+                               Rectangle{
+                                   width: 50
+                                   height: 10
+                                   color: "#888"
+                               }
+
+
+                               Rectangle{
+                                   width: 50
+                                   height: 10
+                                   color: "#888"
+                               }
+
+
+                               Rectangle{
+                                   width: 50
+                                   height: 10
+                                   color: "#888"
+                               }
+
+
+                               Rectangle{
+                                   width: 50
+                                   height: 10
+                                   color: "#888"
+                               }
+
+
+                           spacing: 5
+                       }
+                   }
+                   ColumnLayout{
+
+                   }
                }
 
-            Tab {
-                   title: "Green"
-                   Rectangle { color: "Green" }
-               }
 
 
             style: TabViewStyle {

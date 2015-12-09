@@ -38,6 +38,17 @@ void WindowsEventHandler::logPost(QVariant text, QVariant color){
      mainWindowPtr = ptr;
  }
 
+ void WindowsEventHandler::historyChanged()
+ {
+     // Ahhoz, hogy frissüljenek a QML oldali adatok, frissíteni kell a változók összekapcsolását.
+     //qmlContext.setContextProperty(QStringLiteral("historyModel"), QVariant::fromValue(history.stateList));
+
+
+     // Jelzünk a QML controloknak, hogy újrarajzolhatják magukat, beállítottuk az új értékeket.
+    // emit historyContextUpdated();
+ }
+
+
 void WindowsEventHandler::connectCommand()
 {
     logPost("Csak sikerült, posztoló függvényből.","red");

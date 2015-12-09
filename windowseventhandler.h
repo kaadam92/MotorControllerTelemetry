@@ -39,12 +39,14 @@ signals:
     /** Hatására meg kell történjen az új adatok betöltése a paraméterként
      * átadott asszociatív tárolóban.*/
     void getData(QMap<QString, QVector<double>>&);
+    void contextUpdated();
 
 public slots:
     void connectCommand();
     void stopCommand();
     void driveEnableCommand();
     void hvEnableCommand();
+    void historyChanged();
 
     /** Hatására emittálódik a getData(...) signal.*/
     void replotTimeout(){emit getData(dataVectorMap);}
