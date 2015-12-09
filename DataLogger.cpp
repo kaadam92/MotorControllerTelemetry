@@ -90,7 +90,6 @@ void DataLogger::saveToLog(QQueue<QSharedPointer<QString>>& strQueue, QQueue<QSh
     QTextStream strLogFileStream(&strLogFile);
     while(!strQueue.isEmpty())
     {
-        qDebug() << "STR NEM ÜRES.";
         QSharedPointer<QDateTime> timePtr = strTimeQueue.dequeue();
         QSharedPointer<QString> strPtr = strQueue.dequeue();
 
@@ -101,7 +100,6 @@ void DataLogger::saveToLog(QQueue<QSharedPointer<QString>>& strQueue, QQueue<QSh
     }
     while(!dataQueue.isEmpty())
     {
-        qDebug() << "DATA NEM ÜRES.";
         QSharedPointer<QDateTime> timePtr = dataTimeQueue.dequeue();
         logFileStream << timePtr->toString(dateTimeFormat);
 

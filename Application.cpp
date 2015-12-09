@@ -106,7 +106,7 @@ void Application::checkTab()
 void Application::errorHandling(const QString& error)
 {
     qWarning() << "Hiba!";
-    qWarning() << error << endl;
+    qWarning() << error;
 }
 
 void Application::sendData(quint16 code, double value)

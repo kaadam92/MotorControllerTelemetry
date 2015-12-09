@@ -19,6 +19,11 @@ private:
     /** A belső QTcpSocket példány. */
     QTcpSocket socket;
 
+signals:
+    void connectedToServer();
+private slots:
+    void connected();
+
 };
 
 #endif // COMMUNICATIONTCPSOCKETCLIENT_H
