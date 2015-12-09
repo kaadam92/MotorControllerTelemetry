@@ -149,6 +149,7 @@ Item {
         TabView{
             objectName: "graphTabView"
             height: 486
+            currentIndex: 2
             frameVisible: true
             tabsVisible: true
 
@@ -178,18 +179,17 @@ Item {
                     //  értékétől függ. (Ha az értéke null, akkor "?" jelenik meg.)
                     // A currentState-et a MainWindowsEventHandling::historyChanged metódus regisztrálja be, hogy
                     //  látható legyen a QML oldalról is. (Hivatkozás a RobotStateHistory::currentState-re.)
-                    //Text { text: " Állapot: " + (currentState!=null ? currentState.statusName : "?") }
-                    //Text { text: " Idő: " + (currentState!=null ? currentState.timestamp : "?") }
-                    // Text { text: " X: " + (currentState!=null ? currentState.x.toFixed(3) : "?") }
-                    //Text { text: " V: " + (currentState!=null ? currentState.v.toFixed(3) : "?") }
-                    //Text { text: " A: " + (currentState!=null ? currentState.a.toFixed(3) : "?") }
-                    //Text { text: " Lámpa: " + (currentState!=null ? currentState.light.toString() : "?") }
+                    Text { text: " Current: " ;font.bold: true ;font.pointSize: 14}
+                    Text { text: " Speed: "  ;font.bold: true ;font.pointSize: 14}
+                    Text { text: " Torque: "  ;font.bold: true ;font.pointSize: 14}
+                    Text { text: " Rail Voltage: " ;font.bold: true ;font.pointSize: 14 }
+                    Text { text: " Accu voltage: " ;font.bold: true ;font.pointSize: 14 }
+                    Text { text: " State of Charge: " ;font.bold: true ;font.pointSize: 14 }
                 }
             }
 
 
             Tab {
-                z: 1
                    objectName: "graphTab"
                    title: "Grafikon"
                    Item {
@@ -208,14 +208,17 @@ Item {
                }
 
             Tab {
-                   title: "Green"
-                   Rectangle { color: "Green" }
+                   id: battTab
+                   title: "Battery"
+
+                   BatteryView{
+                       id: battery
+                       anchors.fill: parent
+
+                   }
+
                }
 
-            Tab {
-                   title: "Green"
-                   Rectangle { color: "Green" }
-               }
 
 
             style: TabViewStyle {
