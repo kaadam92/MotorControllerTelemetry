@@ -33,17 +33,13 @@ GroupBox{
             anchors.right: parent
 
             cellname: "Cell1"
-            cellvoltage: cellv1
+            cellvoltage: 2500
             cellvoltagemax: cellmax
-
-
-
         }
         BatteryBar{
             id: cell2
-
             cellname: "Cell2"
-            cellvoltage: cellv2
+            cellvoltage: curr.data
             cellvoltagemax: cellmax
         }
         BatteryBar{

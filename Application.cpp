@@ -4,6 +4,9 @@
  *
  */
 
+const double checkTabTimerInterval = 1000;
+const double dataUpdateTimerInterval = 1000;
+
 Application::Application(int argc, char *argv[])
     : QApplication(argc, argv),
       engine(),
@@ -21,7 +24,14 @@ Application::Application(int argc, char *argv[])
 
 void Application::initQML()
 {
-    engine.rootContext()->setContextProperty("eventhandler", &eventhandler);
+    /** A QML-Cpp kommunikációhoz használt QMLData obejktumokat létre kell
+     *  hozni a QML felület számára.*/
+    QMap<QString,QMLData>::iterator iter;
+    for(iter = qmlDataMap.begin(); iter != qmlDataMap.end(); ++iter)
+    {
+        engine.rootContext()->setContextProperty(iter.key(), &iter.value());
+    }
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     auto rootObjects = engine.rootObjects();
@@ -97,8 +107,13 @@ void Application::initTimers()
      * Minden timer timeoutkor megvizsgáljuk, hogy lekérhető-e a pointer.*/
     QObject::connect(&checkTabTimer,SIGNAL(timeout()),
                      this,SLOT(checkTab()));
-    checkTabTimer.setInterval(1000);
+    checkTabTimer.setInterval(checkTabTimerInterval);
     checkTabTimer.start();
+    /** A cellafeszültségeket, más adatokat is frissíteni kell.*/
+    QObject::connect(&dataUpdateTimer, SIGNAL(timeout()),
+                     this, SLOT(updateData()));
+    dataUpdateTimer.setInterval(dataUpdateTimerInterval);
+    dataUpdateTimer.start();
 }
 
 void Application::generateQMLData()
@@ -108,7 +123,7 @@ void Application::generateQMLData()
 
     for(iter = codeMap.begin(); iter != codeMap.end(); ++iter)
     {
-        QMLData tmpData(0.0);
+        QMLData tmpData(2500);
         qmlDataMap[iter.value()] = tmpData;
     }
 }
@@ -132,6 +147,16 @@ void Application::checkTab()
         {
              qDebug() << "Nincs meg a grafikon tab!! Kattintsál mán...";
         }
+    }
+}
+
+void Application::updateData()
+{
+    QMap<QString, double> dataMap = dataParser.getDataMap();
+    QMap<QString, double>::iterator iter;
+    for(iter = dataMap.begin(); iter != dataMap.end(); ++iter)
+    {
+        qmlDataMap[iter.key()].setData(iter.value());
     }
 }
 

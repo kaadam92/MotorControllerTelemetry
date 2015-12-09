@@ -1,5 +1,6 @@
 #pragma once
 #include <QObject>
+#include <QDebug>
 
 class QMLData : public QObject
 {
@@ -9,7 +10,7 @@ public:
     QMLData(double data = 0, QObject *parent = 0);
     QMLData(const QMLData& other){this->storedData = other.storedData;}
     void setData(const double&);
-    double data(){return storedData;}
+    double data() const {qDebug()<<"lekertek";return storedData;}
 
     QMLData& operator = (const QMLData&);
 

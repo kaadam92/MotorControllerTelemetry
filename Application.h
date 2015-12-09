@@ -47,7 +47,7 @@ private:
     QObject *rootObject;
     QCustomPlot* customPlotPtr;
 
-    QTimer checkTabTimer;
+    QTimer checkTabTimer, dataUpdateTimer;
 
 
     void sendData(quint16 code, double value);
@@ -61,6 +61,7 @@ private slots:
     void checkTab();
 
 public slots:
+    void updateData();
     void errorHandling(const QString&);
     void connectToServer();
     void hvenCommand();
