@@ -72,7 +72,7 @@ Item {
             }
 
             Button {
-                id: hvEnableBtn
+                id: accelerateBtn
                 anchors.left: parent.left
                 anchors.right: parent.right
                 style: ButtonStyle {
@@ -83,7 +83,7 @@ Item {
                         border.color: "#888"
                         radius: 4
                         gradient: Gradient {
-                            GradientStop { position: 0 ; color: control.pressed ? "#ccc" : ( (state.data === 1) ? "#2E2" : "#eee") }
+                            GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
                             GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
                         }
                     }
