@@ -4,7 +4,9 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.4
 import CustomPlot 1.0
 
+
 Item {
+
     id: item1
     width: 1360
     height: 768
@@ -49,6 +51,7 @@ Item {
             //  a signal látható innen, mivel a Button egyik ősében definiáltuk.)
             Button {
                 id: connectBtn
+                objectName: "connectBtnObj"
                 anchors.left: parent.left
                 anchors.right: parent.right
                 height: 210
@@ -72,7 +75,8 @@ Item {
             }
 
             Button {
-                id: accelerateBtn
+                id: hvenBtn
+                objectName: "hvenBtnObj"
                 anchors.left: parent.left
                 anchors.right: parent.right
                 style: ButtonStyle {
@@ -95,7 +99,8 @@ Item {
             }
 
             Button {
-                id: startBtn
+                id: drenBtn
+                objectName: "drenBtnObj"
                 anchors.left: parent.left
                 anchors.right: parent.right
                 style: ButtonStyle {
@@ -119,6 +124,7 @@ Item {
 
             Button {
                 id: stopBtn
+                objectName: "stopBtnObj"
                 anchors.left: parent.left
                 anchors.right: parent.right
                 style: ButtonStyle {
@@ -358,15 +364,12 @@ Item {
                                 message: "Indul a program..."
                                 colorCode: "grey"
                             }
-
-                            ListElement {
-                                message: "ERROR: BMS_ERR_Short_Circuit"
-                                colorCode: "red"
-
-                            }
                         }
 
                         onCountChanged: {
+                            incrementCurrentIndex();
+                            incrementCurrentIndex();
+                            incrementCurrentIndex();
                             incrementCurrentIndex();
                         }
                     }

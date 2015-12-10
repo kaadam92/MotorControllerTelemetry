@@ -79,12 +79,15 @@ void Application::makeConnections()
     connect(&serialPort,SIGNAL(dataReady(QDataStream&)),
             &dataParser,SLOT(dataInput(QDataStream&)));
 
+    /** Hibakezelő slothoz tartozó kötözések.*/
     connect(&tcpClient,SIGNAL(errorOccurred(const QString&)),
             this,SLOT(errorHandling(const QString&)));
     connect(&dataParser,SIGNAL(errorOccurred(const QString&)),
             this,SLOT(errorHandling(const QString&)));
     connect(&serialPort,SIGNAL(errorOccurred(const QString&)),
             this,SLOT(errorHandling(const QString&)));
+    connect(&dataLogger,SIGNAL(errorOccurred(QString)),
+            this,SLOT(errorHandling(QString)));
 
     /** A grafikon datainak frissítésért felelős signalok-slotok.*/
     QObject::connect(&eventhandler,SIGNAL(getData(QMap<QString,QVector<double>>&)),
@@ -92,9 +95,11 @@ void Application::makeConnections()
     QObject::connect(&dataParser,SIGNAL(newToPlot()),
                      &eventhandler,SLOT(replot()));
 
-    /** GUI string kijelzéshez tartozó signalok-slotok.*/
+    /** GUI kijelzéshez tartozó signalok-slotok.*/
     QObject::connect(&dataParser, SIGNAL(newString(QSharedPointer<QString>)),
                      &eventhandler, SLOT(stringMessage(QSharedPointer<QString>)));
+    QObject::connect(&tcpClient, SIGNAL(connectedToServer()),
+                     this, SLOT(connectedToServer()));
 
     /** A loggolásért felelős jelek összekötése.*/
     QObject::connect(&dataLogger, SIGNAL(getDataToLog()),
@@ -167,6 +172,7 @@ void Application::errorHandling(const QString& error)
 {
     qWarning() << "Hiba!";
     qWarning() << error;
+    eventhandler.logPost(error, "red");
 }
 
 void Application::sendData(quint16 code, double value)
@@ -175,6 +181,11 @@ void Application::sendData(quint16 code, double value)
     QByteArray byteArray(reinterpret_cast<const char*>(&value), sizeof(double));
     ba.insert(2,byteArray);
     tcpClient.send(ba);
+}
+
+void Application::connectedToServer()
+{
+    eventhandler.logPost("Sikeres csatlakozás a szerverhez.", "green");
 }
 
 void Application::connectToServer()

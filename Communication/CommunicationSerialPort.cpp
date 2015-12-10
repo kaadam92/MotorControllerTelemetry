@@ -25,7 +25,7 @@ void CommunicationSerialPort::connect()
 {
     if (!serialPort.open(QIODevice::ReadWrite))
     {
-        emit errorOccurred("Cannot open serial port " + serialPort.portName());
+        emit errorOccurred("A soros portot nem sikerült megnyitni. " + serialPort.portName());
         return;
     }
 

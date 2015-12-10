@@ -56,7 +56,6 @@ void WindowsEventHandler::stringMessage(QSharedPointer<QString> strPtr)
 
 void WindowsEventHandler::connectCommand()
 {
-    logPost("Csak sikerült, posztoló függvényből.","red");
     qDebug() << "Connect gomb megnyomva.";
     replotTimer.start();
 }

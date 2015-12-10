@@ -10,7 +10,7 @@ public:
     QMLData(double data = 0, QObject *parent = 0);
     QMLData(const QMLData& other){this->storedData = other.storedData;}
     void setData(const double&);
-    double data() const {qDebug()<<"lekertek";return storedData;}
+    double data() const {return storedData;}
 
     QMLData& operator = (const QMLData&);
 

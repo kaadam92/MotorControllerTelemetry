@@ -56,7 +56,6 @@ private:
     void initTimers();
     void generateQMLData();
 
-
 private slots:
     void checkTab();
 
@@ -64,6 +63,7 @@ public slots:
     void updateData();
     void errorHandling(const QString&);
     void connectToServer();
+    void connectedToServer();
     void hvenCommand();
     void drenCommand();
     void stopCommand();

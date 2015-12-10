@@ -4,6 +4,7 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import CustomPlot 1.0
 
+
 // Ez lesz az alkalmazás főablaka
 ApplicationWindow {
     title: qsTr("Elektromos jármű diagnoszikai szoftver")
