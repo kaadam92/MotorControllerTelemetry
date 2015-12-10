@@ -68,6 +68,7 @@ Item {
     signal hvEnableCommand;
     signal driveEnableCommand;
     signal stopCommand;
+    signal testCommand;
 
     // A parancs nyomógombok elemcsoportja
     GroupBox {
@@ -89,12 +90,15 @@ Item {
             // Reset nyomógomb. Oldal irányba kitöltik a szülőt, 0 pixel margó kihagyásával.
             //  Megnyomása esetén (Button.Clicked signal) meghívja a resetCommand signalt. (Ez
             //  a signal látható innen, mivel a Button egyik ősében definiáltuk.)
+            RowLayout{
+                anchors.fill: parent
+                anchors.topMargin: 10
             Button {
                 id: connectBtn
                 objectName: "connectBtnObj"
                 anchors.left: parent.left
-                anchors.right: parent.right
                 height: 210
+                width: columnLayout1.width/2
                 style: ButtonStyle {
                     background: Rectangle {
                         implicitWidth: 100
@@ -112,6 +116,31 @@ Item {
                 anchors.leftMargin: 0
                 anchors.rightMargin: 0
                 onClicked: connectCommand()
+            }
+            Button {
+                id: selfTestBtn
+                objectName: "connectBtnObj"
+                anchors.right: parent.right
+                height: 210
+                width: columnLayout1.width/2
+                style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 4
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
+                            GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                        }
+                    }
+                }
+                text: qsTr("Test")
+                anchors.leftMargin: 0
+                anchors.rightMargin: 0
+                onClicked: testCommand()
+            }
             }
 
             Button {

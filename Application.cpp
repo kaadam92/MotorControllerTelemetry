@@ -66,6 +66,8 @@ void Application::initQML()
                      &eventhandler, SLOT(stopCommand()));
     QObject::connect(rootObject, SIGNAL(stopCommandCpp()),
                      this, SLOT(stopCommand()));
+    QObject::connect(rootObject, SIGNAL(testCommandCpp()),
+                     this, SLOT(testCommand()));
 
     QObject::connect(rootObject, SIGNAL(vdemandSliderChanged(QVariant )),
                      this, SLOT(vdemandChanged(QVariant )));
@@ -201,6 +203,12 @@ void Application::hvenCommand()
 {
     sendData(dataParser.getCode("selftest"), 10);
     sendData(dataParser.getCode("state"), 10);
+
+}
+
+void Application::testCommand()
+{
+    sendData(dataParser.getCode("selftest"), 10);
 
 }
 

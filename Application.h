@@ -67,5 +67,6 @@ public slots:
     void hvenCommand();
     void drenCommand();
     void stopCommand();
+    void testCommand();
     void vdemandChanged(QVariant);
 };

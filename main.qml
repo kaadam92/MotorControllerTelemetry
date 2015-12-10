@@ -21,6 +21,7 @@ ApplicationWindow {
     signal hvEnableCommandCpp()
     signal driveEnableCommandCpp()
     signal stopCommandCpp()
+    signal testCommandCpp()
     signal vdemandSliderChanged(var vdemand)
 
     // Az ablak menuBar tulajdonságának értékül adunk egy MenuBar példányt, amit itt rakunk össze.
@@ -64,6 +65,10 @@ ApplicationWindow {
 
         onDriveEnableCommand: {
             driveEnableCommandCpp();
+        }
+
+        onTestCommand: {
+            testCommandCpp();
         }
 
         onStopCommand: {
