@@ -8,7 +8,7 @@ CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent
     setFlag( QQuickItem::ItemHasContents, true );
     setAcceptedMouseButtons( Qt::AllButtons );
 
-    connect( this, &QQuickPaintedItem::widthChanged, this, &CustomPlotItem::SstomPlotSize );
+    connect( this, &QQuickPaintedItem::widthChanged, this, &CustomPlotItem::updateCustomPlotSize );
     connect( this, &QQuickPaintedItem::heightChanged, this, &CustomPlotItem::updateCustomPlotSize );
 
 }

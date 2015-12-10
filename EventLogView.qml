@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.4
 import CustomPlot 1.0
 
-
 RowLayout {
 
     property color selectedColor: "grey"
