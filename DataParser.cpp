@@ -1,5 +1,6 @@
 #include "DataParser.h"
 
+const quint8 cellnum_def = 12;
 
 DataParser::DataParser (const QString& codeFilePath)
     :codeFile(codeFilePath)
@@ -21,43 +22,108 @@ DataParser::DataParser (const QString& codeFilePath)
     while(!line.isNull())
     {
         list = line.split("-");
-        codeMap.insert(list.at(1), list.at(0).toInt(&ok, 16));
+        codeMap.insert(list.at(0).toInt(&ok, 16), list.at(1));
+        codeMapInv.insert(list.at(1), list.at(0).toInt(&ok, 16));
         line = fileInput.readLine();
+    }
+
+    /** A fájlból való betöltés alapján a dataMap inicializációja 0-val.*/
+    QMapIterator<quint16, QString> i(codeMap);
+    while (i.hasNext())
+    {
+        i.next();
+        dataMap[i.value()]=0;
     }
 }
 
 void DataParser::dataInput(QDataStream& stream)
 {
-    qDebug() << "Adat érkezett"<< endl;
+    //qDebug() << "Adat érkezett"<< endl;
+
+    QMap<QString, double> tmpData = dataMap;
 
     QByteArray byteArray;
     stream >> byteArray;
-    quint16 code = ((quint8)byteArray[0])*256+(quint8)byteArray[1];
 
-    if(code == codeMap.value(QString("temp")))
+    quint16 code;
+    double value;
+    uint readBytes = 0;
+
+    if(byteArray.size() >= sizeof(quint16))
     {
-        quint16 ST = ((quint8)byteArray[2])*256+(quint8)byteArray[3];
-        dataMap[code]=175.0*ST/(qPow(2,16)-1)-45;
+        /** Első kód kinyerése. Ettől függ a további műveletek sorrendje.*/
+        memcpy(&code, byteArray.data(), sizeof(quint16));
+        /** String érkezett. Ekkor csak a string érkezhet meg, más adatot nem tartalmaz a tömb.*/
+        if(code==codeMapInv["str"])
+        {
+            QString str;
+            /** A string a két bájtos kód után található.*/
+            str = (byteArray.data() + sizeof(quint16));
+            /** A stringre shared pointert készítek, hogy kívülről elérhető legyen és
+             * a használat után meg is szűnjön.*/
+            QSharedPointer<QString> strPtr = QSharedPointer<QString>::create(str);
+            QSharedPointer<QDateTime> timePtr = QSharedPointer<QDateTime>::create(QDateTime::currentDateTime());
+            strQueue.enqueue(strPtr);
+            strTimeQueue.enqueue(timePtr);
+            emit newString(QSharedPointer<QString>(strPtr));
+        }
+        /** Más esetben adat jött.*/
+        else
+        {
+            while(byteArray.size() >= readBytes)
+            {
+                memcpy(&code, byteArray.data() + readBytes, sizeof(quint16));
+                readBytes += sizeof(quint16);
+                /** Ha a cellafeszültségek jönnek, más eljárásra van szükség:
+                 *  a kód után a cellafeszültségek jönnek sorban.*/
+                if(code == codeMapInv["vcells"])
+                {
+                    uint vcellByte = readBytes;
+                    uint cellnum = 1;
+                    QString strcode("cell");
+                    while(cellnum_def*sizeof(double) > readBytes-vcellByte)
+                    {
+                        memcpy(&value, byteArray.data() + readBytes, sizeof(double));
+                        readBytes += sizeof(double);
+                        tmpData[strcode+QString::number(cellnum)]=value;
+                        cellnum++;
+                    }
+                }
+                /** Egyébként sima adat jön: double érték.*/
+                else
+                {
+                    memcpy(&value, byteArray.data() + readBytes, sizeof(double));
+                    readBytes += sizeof(double);
+                    tmpData[codeMap.value(code)]=value;
+                }
+            }
+            dataMap = tmpData;
+            QSharedPointer<QMap<QString, double>> dataPtr = QSharedPointer<QMap<QString, double>>::create(tmpData);
+            QSharedPointer<QDateTime> timePtr = QSharedPointer<QDateTime>::create(QDateTime::currentDateTime());
+            dataQueue.enqueue(dataPtr);
+            dataTimeQueue.enqueue(timePtr);
+        }
     }
-    else if(code == codeMap.value(QString("hum")))
+    //PrintDataToDebug();
+}
+
+void DataParser::getData(QMap<QString, QVector<double>>& cont)
+{
+    QMap<QString, double>::iterator idata;
+
+    for (idata=dataMap.begin(); idata!=dataMap.end(); ++idata)
     {
-        quint16 SRH = ((quint8)byteArray[2])*256+(quint8)byteArray[3];
-        dataMap[code]=100.0*SRH/(qPow(2,16)-1);
+        cont[idata.key()].append(idata.value());
     }
-    else if(code == codeMap.value(QString("vbat")))
-    {
-        quint16 vbat=((quint8)byteArray[2])*256+(quint8)byteArray[3];
-        dataMap[code]=vbat;
-    }
-    PrintDataToDebug();
-    return;
+
+    emit newToPlot();
 }
 
 // Test for master branch
 
 void DataParser::PrintDataToDebug()
 {
-    QMapIterator<qint16, double> i(dataMap);
+    QMapIterator<QString, double> i(dataMap);
     while (i.hasNext())
     {
         i.next();
