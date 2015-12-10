@@ -5,12 +5,12 @@
 #-------------------------------------------------
 
 CONFIG += c++14
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 QMAKE_CXXFLAGS_CXX11    = -std=c++1y
 QT += core gui
-
 QT += qml quick widgets
 QT += serialport
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += printsupport
 
 TARGET = MotorControllerTelemetry
 TEMPLATE = app
@@ -24,7 +24,22 @@ SOURCES += main.cpp\
     Communication/CommunicationTcpSocketServer.cpp \
     Application.cpp \
     Communication/CommunicationTcpSocketClient.cpp \
-    DataParser.cpp
+    DataParser.cpp \
+    customplotitem.cpp \
+    qcustomplot.cpp \
+    windowseventhandler.cpp \
+    DataLogger.cpp \
+    QMLData.cpp
+
+
+RESOURCES += qml.qrc
+
+# Additional import path used to resolve QML modules in Qt Creator's code model
+#QML_IMPORT_PATH =
+
+# Default rules for deployment.
+include(deployment.pri)
+
 
 HEADERS  += mainwindow.h \
     Communication/Communication.h \
@@ -33,6 +48,11 @@ HEADERS  += mainwindow.h \
     Communication/CommunicationTcpSocketServer.h \
     Application.h \
     Communication/CommunicationTcpSocketClient.h \
-    DataParser.h
+    DataParser.h \
+    customplotitem.h \
+    qcustomplot.h \
+    windowseventhandler.h \
+    DataLogger.h \
+    QMLData.h
 
 FORMS    += mainwindow.ui

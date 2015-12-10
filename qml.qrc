@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>MainForm.qml</file>
+        <file>DataWindow.qml</file>
+        <file>BatteryView.qml</file>
+        <file>BatteryBar.qml</file>
+    </qresource>
+</RCC>

@@ -6,6 +6,8 @@
 /** @brief QTcpSocket alapú kommunikáció kliens oldala. */
 class CommunicationTcpSocketClient : public CommunicationTcpSocket
 {
+    Q_OBJECT
+
 public:
     /** Konstruktor */
     CommunicationTcpSocketClient();
@@ -18,6 +20,12 @@ public:
 private:
     /** A belső QTcpSocket példány. */
     QTcpSocket socket;
+
+signals:
+    void connectedToServer();
+
+public slots:
+    void connected(){emit connectedToServer();}
 
 };
 

@@ -2,6 +2,8 @@
 
 CommunicationTcpSocketClient::CommunicationTcpSocketClient()
 {
+    QObject::connect(&socket, SIGNAL(connected()),
+                     this, SLOT(connected()));
 }
 
 void CommunicationTcpSocketClient::connect(QString url, int port)
