@@ -1,13 +1,11 @@
 #include "CustomPlotItem.h"
-#include "qcustomplot.h"
+#include "QCustomPlot/qcustomplot.h"
 #include <QDebug>
 
 CustomPlotItem::CustomPlotItem( QQuickItem* parent ) : QQuickPaintedItem( parent )
     , m_CustomPlot( nullptr )
 {
     setFlag( QQuickItem::ItemHasContents, true );
-    // setRenderTarget(QQuickPaintedItem::FramebufferObject);
-    // setAcceptHoverEvents(true);
     setAcceptedMouseButtons( Qt::AllButtons );
 
     connect( this, &QQuickPaintedItem::widthChanged, this, &CustomPlotItem::updateCustomPlotSize );
@@ -27,7 +25,7 @@ void CustomPlotItem::initCustomPlot()
 
     updateCustomPlotSize();
 
-    setupQuadraticDemo( m_CustomPlot );
+    setup( m_CustomPlot );
 
     connect( m_CustomPlot, &QCustomPlot::afterReplot, this, &CustomPlotItem::onCustomReplot );
 
@@ -77,7 +75,6 @@ void CustomPlotItem::routeMouseEvents( QMouseEvent* event )
     if (m_CustomPlot)
     {
         QMouseEvent* newEvent = new QMouseEvent( event->type(), event->localPos(), event->button(), event->buttons(), event->modifiers() );
-        //QCoreApplication::sendEvent( m_CustomPlot, newEvent );
         QCoreApplication::postEvent( m_CustomPlot, newEvent );
     }
 }
@@ -92,13 +89,11 @@ void CustomPlotItem::updateCustomPlotSize()
 
 void CustomPlotItem::onCustomReplot()
 {
-    //qDebug() << Q_FUNC_INFO;
     update();
 }
 
-void CustomPlotItem::setupQuadraticDemo( QCustomPlot* customPlot )
+void CustomPlotItem::setup( QCustomPlot* customPlot )
 {
-    // create graph
     customPlot->addGraph();
     customPlot->graph( 0 )->setPen( QPen( Qt::red ) );
     customPlot->graph( 0 )->setSelectedPen( QPen( Qt::blue, 2 ) );
@@ -111,10 +106,9 @@ void CustomPlotItem::setupQuadraticDemo( QCustomPlot* customPlot )
     customPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
     customPlot->xAxis->setDateTimeFormat("yyyy.MM.dd.\nhh:mm:ss:zzz");
 
-    // give the axes some labels:
-    customPlot->xAxis->setLabel( "x" );
+    customPlot->xAxis->setLabel( "t" );
     customPlot->yAxis->setLabel( "y" );
-    // set axes ranges, so we see all data:
+
     customPlot->xAxis->setRange( -1, 1 );
     customPlot->yAxis->setRange( -20, 50 );
 

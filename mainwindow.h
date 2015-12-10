@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 
@@ -7,6 +6,10 @@ namespace Ui {
 class MainWindow;
 }
 
+/** @brief Az ablak megjelenítéséért felelős objektum.
+ *
+ * Csak létezik, feladatot nem hajt végre.
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -18,5 +21,3 @@ public:
 private:
     Ui::MainWindow *ui;
 };
-
-#endif // MAINWINDOW_H

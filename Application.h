@@ -24,9 +24,8 @@
  * @brief Alkalmazás osztály. A main() példányosítja és indítja el.
  *
  * A konstruktor elvégzi az alapvető példányosításokat és a signalok összekapcsolását.
- *
- *
  */
+
 class Application : public QApplication
 {
     Q_OBJECT

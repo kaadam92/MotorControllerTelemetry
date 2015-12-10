@@ -1,30 +1,23 @@
 #include "windowseventhandler.h"
 
 const int replotTimerInterval = 100;
+const int timeVecToDisplay = 100;
 
 WindowsEventHandler::WindowsEventHandler(QQmlContext &qmlContext)
     :qmlContext(qmlContext)
 {
-//    auto rootObjects = engine.rootObjects();
-//    if (rootObjects.size() == 0)
-//    {
-//        qDebug() << "HIBA: Nem sikerült létrehozni a QML környezetet.";
-//    }
-//
-//    QObject *rootObject = rootObjects[0];
-
     plotPtr = nullptr;
     mainWindowPtr = nullptr;
+
     /** Újrarajzoló időzítés inicializálása.*/
     connect(&replotTimer, SIGNAL(timeout()),
             this, SLOT(replotTimeout()));
     replotTimer.setInterval(replotTimerInterval);
-    //replotTimer.start();
 }
 
 
-void WindowsEventHandler::logPost(QVariant text, QVariant color){
-
+void WindowsEventHandler::logPost(QVariant text, QVariant color)
+{
     QVariant returnedValue;
     QVariant messageText = text;
     QVariant outputcolor = color;
@@ -34,9 +27,10 @@ void WindowsEventHandler::logPost(QVariant text, QVariant color){
         Q_ARG(QVariant, outputcolor));
 }
 
- void WindowsEventHandler::setMainWindowPtr(QObject* ptr){
-     mainWindowPtr = ptr;
- }
+void WindowsEventHandler::setMainWindowPtr(QObject* ptr)
+{
+    mainWindowPtr = ptr;
+}
 
 void WindowsEventHandler::stringMessage(QSharedPointer<QString> strPtr)
 {
@@ -61,16 +55,6 @@ void WindowsEventHandler::stringMessage(QSharedPointer<QString> strPtr)
     }
     strPtr.clear();
 }
- void WindowsEventHandler::historyChanged()
- {
-     // Ahhoz, hogy frissüljenek a QML oldali adatok, frissíteni kell a változók összekapcsolását.
-     //qmlContext.setContextProperty(QStringLiteral("historyModel"), QVariant::fromValue(history.stateList));
-
-
-     // Jelzünk a QML controloknak, hogy újrarajzolhatják magukat, beállítottuk az új értékeket.
-    // emit historyContextUpdated();
- }
-
 
 void WindowsEventHandler::connectCommand()
 {
@@ -93,27 +77,27 @@ void WindowsEventHandler::driveEnableCommand()
 void WindowsEventHandler::stopCommand()
 {
     qDebug() << "Stop gomb megnyomva.";
-    //replotTimer.stop();
 }
 
 void WindowsEventHandler::replot()
 {
     timeVec.append(QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0);
+    // Ha nincs még plot felület (még nem jött létre, mert sosem jelent még meg), akkor ne próbáljunk meg rajzolni
     if(plotPtr != nullptr)
     {
+        //Ha nincs elég grafikon, akkor sem érdemes rajzolni.
         if(plotPtr->graphCount() >= 2)
         {
             plotPtr->graph(0)->setData(timeVec,dataVectorMap["speed"]);
             plotPtr->graph(1)->setData(timeVec,dataVectorMap["vref"]);
-            if(timeVec.size() < 100)
+            if(timeVec.size() < timeVecToDisplay)
                 plotPtr->xAxis->setRange(timeVec.first(), timeVec.last());
             else
             {
                 QVector<double>::iterator i = timeVec.end();
-                i-=100;
+                i-=timeVecToDisplay;
                 plotPtr->xAxis->setRange(*(i), timeVec.last());
             }
-            //plotPtr->yAxis->setRange(-20, 55);
             plotPtr->replot();
         }
         else
