@@ -262,18 +262,12 @@ Item {
         Tab{
             title:"Pillanatnyi értékek"
 
-            ColumnLayout {
+            CurrentDataView {
                 width: 351
-                anchors.bottomMargin: 259
+                anchors.bottomMargin: 200
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
-                Text { text: " Current: " + curr.data.toFixed(2) + " A" ;font.bold: true ;font.pointSize: 14}
-                Text { text: " Speed: " + (speed.data*3.6).toFixed(2) + " km/h" ;font.bold: true ;font.pointSize: 14}
-                Text { text: " Torque: " + torq.data.toFixed(2) + " Nm"  ;font.bold: true ;font.pointSize: 14}
-                Text { text: " Rail Voltage: " + vrail.data.toFixed(2) + " V" ;font.bold: true ;font.pointSize: 14 }
-                Text { text: " Accu voltage: " + vacc.data.toFixed(2) + " V"  ;font.bold: true ;font.pointSize: 14 }
-                Text { text: " Charge left: " + capac.data.toFixed(2) + " Ah"  ;font.bold: true ;font.pointSize: 14 }
             }
         }
 
@@ -323,15 +317,6 @@ Item {
         }
     }
 
-    Component {
-        id: stateDelegate
-        Row {
-            Text { text: model.statusName }
-            Text { text: " X: " + model.x.toFixed(3) }
-            Text { text: " V: " + model.v.toFixed(3) }
-            Text { text: " A: " + model.a.toFixed(3) }
-        }
-    }
 
     GroupBox {
         id: logWindow
