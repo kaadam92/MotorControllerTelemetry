@@ -4,16 +4,17 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.4
 import CustomPlot 1.0
 
-property color selectedColor: "grey"
-
-function selectColor(messageText, color)
-{
-    selectedColor = color;
-    eventLogModel.append( { message: messageText, colorCode: color } );
-    console.log("selectColor(" + messageText + ", " + color + ")");
-}
 
 RowLayout {
+
+    property color selectedColor: "grey"
+
+    function selectColor(messageText, color)
+    {
+        selectedColor = color;
+        eventLogModel.append( { message: messageText, colorCode: color } );
+        console.log("selectColor(" + messageText + ", " + color + ")");
+    }
 
     ScrollView {
         Layout.fillHeight: true

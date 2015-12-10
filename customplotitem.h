@@ -5,6 +5,10 @@
 
 class QCustomPlot;
 
+/** @brief A grafikont tartalmazó és kezelését megvalósító objektum.
+ *
+ * A
+ */
 class CustomPlotItem : public QQuickPaintedItem
 {
     Q_OBJECT
@@ -27,13 +31,12 @@ protected:
     virtual void mouseMoveEvent( QMouseEvent* event );
     virtual void mouseDoubleClickEvent( QMouseEvent* event );
 
-    void setupQuadraticDemo( QCustomPlot* customPlot );
+    void setup( QCustomPlot* customPlot );
 
 private:
     QCustomPlot* m_CustomPlot;
 
 private slots:
-    //void graphClicked( QCPAbstractPlottable* plottable );
     void onCustomReplot();
     void updateCustomPlotSize();
 };

@@ -61,12 +61,16 @@ private:
     void printLogFileHeader();
 
 signals:
+    /** @brief Hibakezelés.*/
     void errorOccurred(const QString&);
+    /** @brief Megkéri a DataParsert, hogy küldje el a várakozási sorokat tartalmazó jelet. @see DataParser::giveQueue()*/
     void getDataToLog();
 
 public slots:
+    /** @brief A DataParser::giveQueue() jelét fogadja az adatokkal.*/
     void saveToLog(QQueue<QSharedPointer<QString>>&, QQueue<QSharedPointer<QMap<QString, double>>>&,
                    QQueue<QSharedPointer<QDateTime>>&, QQueue<QSharedPointer<QDateTime>>&);
 private slots:
+    /** @brief Ha lejár a timer kibocsájtja az adatlekérő jelet.*/
     void loggerTimerTimeout(){emit getDataToLog();}
 };
