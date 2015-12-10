@@ -40,7 +40,6 @@ void CustomPlotItem::paint( QPainter* painter )
         QPixmap    picture( boundingRect().size().toSize() );
         QCPPainter qcpPainter( &picture );
 
-        //m_CustomPlot->replot();
         m_CustomPlot->toPainter( &qcpPainter );
 
         painter->drawPixmap( QPoint(), picture );
