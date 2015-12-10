@@ -8,7 +8,7 @@ class QMLData : public QObject
     Q_PROPERTY(double data READ data WRITE setData NOTIFY dataChanged)
 public:
     QMLData(double data = 0, QObject *parent = 0);
-    QMLData(const QMLData& other){this->storedData = other.storedData;}
+    QMLData(const QMLData& other):QObject(){this->storedData = other.storedData;}
     void setData(const double&);
     double data() const {return storedData;}
 
