@@ -7,6 +7,49 @@ import CustomPlot 1.0
 
 Item {
 
+    Connections
+    {
+        id: hvenBtnConnection
+        target: hven
+        ignoreUnknownSignals: true
+        onDataChanged:
+        {
+            hvenBtn.gradcolor1 = (hven.data > 1) ? "#0c0" : "#ccc";
+            hvenBtn.gradcolor2 = (hven.data > 1) ? "#0e0" : "#eee";
+            hvenBtn.gradcolor3 = (hven.data > 1) ? "#0a0" : "#aaa";
+            hvenBtn.gradcolor4 = (hven.data > 1) ? "#0c0" : "#ccc";
+            console.log("HVEN" + hven.data)
+        }
+    }
+    Connections
+    {
+        id: drenBtnConnection
+        target: dren
+        ignoreUnknownSignals: true
+        onDataChanged:
+        {
+            drenBtn.gradcolor1 = (dren.data > 1) ? "#0c0" : "#ccc";
+            drenBtn.gradcolor2 = (dren.data > 1) ? "#0e0" : "#eee";
+            drenBtn.gradcolor3 = (dren.data > 1) ? "#0a0" : "#aaa";
+            drenBtn.gradcolor4 = (dren.data > 1) ? "#0c0" : "#ccc";
+            console.log("DREN" + dren.data)
+        }
+    }
+    Connections
+    {
+        id: stopBtnConnection
+        target: stop
+        ignoreUnknownSignals: true
+        onDataChanged:
+        {
+            stopBtn.gradcolor1 = (stop.data > 1) ? "#0c0" : "#f99";
+            stopBtn.gradcolor2 = (stop.data > 1) ? "#0e0" : "#f66";
+            stopBtn.gradcolor3 = (stop.data > 1) ? "#0a0" : "#f66";
+            stopBtn.gradcolor4 = (stop.data > 1) ? "#0c0" : "#e55";
+            console.log("STOP" + stop.data)
+        }
+    }
+
     id: item1
     width: 1360
     height: 768
@@ -27,7 +70,7 @@ Item {
     signal connectCommand;
     signal hvEnableCommand;
     signal driveEnableCommand;
-    signal stopCommand
+    signal stopCommand;
 
     // A parancs nyomógombok elemcsoportja
     GroupBox {
@@ -79,6 +122,10 @@ Item {
                 objectName: "hvenBtnObj"
                 anchors.left: parent.left
                 anchors.right: parent.right
+                property color gradcolor1: "#ccc"
+                property color gradcolor2: "#eee"
+                property color gradcolor3: "#aaa"
+                property color gradcolor4: "#ccc"
                 style: ButtonStyle {
                     background: Rectangle {
                         implicitWidth: 100
@@ -87,8 +134,8 @@ Item {
                         border.color: "#888"
                         radius: 4
                         gradient: Gradient {
-                            GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
-                            GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                            GradientStop { position: 0 ; color: control.pressed ? hvenBtn.gradcolor1 : hvenBtn.gradcolor2 }
+                            GradientStop { position: 1 ; color: control.pressed ? hvenBtn.gradcolor3 : hvenBtn.gradcolor4 }
                         }
                     }
                 }
@@ -103,6 +150,10 @@ Item {
                 objectName: "drenBtnObj"
                 anchors.left: parent.left
                 anchors.right: parent.right
+                property color gradcolor1: "#ccc"
+                property color gradcolor2: "#eee"
+                property color gradcolor3: "#aaa"
+                property color gradcolor4: "#ccc"
                 style: ButtonStyle {
                     background: Rectangle {
                         implicitWidth: 100
@@ -111,8 +162,8 @@ Item {
                         border.color: "#888"
                         radius: 4
                         gradient: Gradient {
-                            GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
-                            GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                            GradientStop { position: 0 ; color: control.pressed ? drenBtn.gradcolor1 : drenBtn.gradcolor2 }
+                            GradientStop { position: 1 ; color: control.pressed ? drenBtn.gradcolor3 : drenBtn.gradcolor4 }
                         }
                     }
                 }
@@ -127,6 +178,10 @@ Item {
                 objectName: "stopBtnObj"
                 anchors.left: parent.left
                 anchors.right: parent.right
+                property color gradcolor1: "#ccc"
+                property color gradcolor2: "#eee"
+                property color gradcolor3: "#aaa"
+                property color gradcolor4: "#ccc"
                 style: ButtonStyle {
                     background: Rectangle {
                         implicitWidth: 100
@@ -136,8 +191,10 @@ Item {
                         color: "#F66"
                         radius: 4
                         gradient: Gradient {
-                            GradientStop { position: 1 ; color: control.pressed ? "#F66" : "#E55" }
-                            GradientStop { position: 0 ; color: control.pressed ? "#F99" : "#F66" }
+                            GradientStop { position: 0 ; color: control.pressed ? stopBtn.gradcolor1 : stopBtn.gradcolor2 }
+                            GradientStop { position: 1 ; color: control.pressed ? stopBtn.gradcolor3 : stopBtn.gradcolor4 }
+                            //GradientStop { position: 1 ; color: control.pressed ? "#F66" : "#E55" }
+                            //GradientStop { position: 0 ; color: control.pressed ? "#F99" : "#F66" }
                         }
                     }
                 }
@@ -238,9 +295,7 @@ Item {
             BatteryView{
                 id: battery
                 anchors.fill: parent
-
             }
-
         }
 
 
