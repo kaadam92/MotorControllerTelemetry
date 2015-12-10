@@ -62,85 +62,77 @@ Item {
         console.log("selectColor(" + messageText + ", " + color + ")");
     }
 
-    // Signalok, melyek a kiadott parancsokat jelzik és a nyomógombok
-    //  eseménykezelői aktiválják őket.
+
     signal connectCommand;
     signal hvEnableCommand;
     signal driveEnableCommand;
     signal stopCommand;
     signal testCommand;
 
-    // A parancs nyomógombok elemcsoportja
     GroupBox {
         id: commandsGB
         title: "Parancsok"
-        // Bal oldalon és fent követi a szülőt. A szélessége fix.
         anchors.left : parent.left
         anchors.top : parent.top
         width: 250
         height: 500
 
-        // A nyomógombokat oszlopba rendezzük
         ColumnLayout {
             id: columnLayout1
             anchors.bottomMargin: 0
-            // Az oszlop kitölti a szülőt, vagyis a commandsGB-t.
             anchors.fill: parent
 
-            // Reset nyomógomb. Oldal irányba kitöltik a szülőt, 0 pixel margó kihagyásával.
-            //  Megnyomása esetén (Button.Clicked signal) meghívja a resetCommand signalt. (Ez
-            //  a signal látható innen, mivel a Button egyik ősében definiáltuk.)
             RowLayout{
                 anchors.fill: parent
                 anchors.topMargin: 10
-            Button {
-                id: connectBtn
-                objectName: "connectBtnObj"
-                anchors.left: parent.left
-                height: 210
-                width: columnLayout1.width/2
-                style: ButtonStyle {
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 50
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
-                        radius: 4
-                        gradient: Gradient {
-                            GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
-                            GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                Button {
+                    id: connectBtn
+                    objectName: "connectBtnObj"
+                    anchors.left: parent.left
+                    height: 210
+                    width: columnLayout1.width/2
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            implicitWidth: 100
+                            implicitHeight: 50
+                            border.width: control.activeFocus ? 2 : 1
+                            border.color: "#888"
+                            radius: 4
+                            gradient: Gradient {
+                                GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
+                                GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                            }
                         }
                     }
+                    text: qsTr("Connect")
+                    anchors.leftMargin: 0
+                    anchors.rightMargin: 0
+                    onClicked: connectCommand()
                 }
-                text: qsTr("Connect")
-                anchors.leftMargin: 0
-                anchors.rightMargin: 0
-                onClicked: connectCommand()
-            }
-            Button {
-                id: selfTestBtn
-                objectName: "connectBtnObj"
-                anchors.right: parent.right
-                height: 210
-                width: columnLayout1.width/2
-                style: ButtonStyle {
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 50
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "#888"
-                        radius: 4
-                        gradient: Gradient {
-                            GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
-                            GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                Button {
+                    id: selfTestBtn
+                    objectName: "connectBtnObj"
+                    anchors.right: parent.right
+                    height: 210
+                    width: columnLayout1.width/2
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            implicitWidth: 100
+                            implicitHeight: 50
+                            border.width: control.activeFocus ? 2 : 1
+                            border.color: "#888"
+                            radius: 4
+                            gradient: Gradient {
+                                GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
+                                GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                            }
                         }
                     }
+                    text: qsTr("Test")
+                    anchors.leftMargin: 0
+                    anchors.rightMargin: 0
+                    onClicked: testCommand()
                 }
-                text: qsTr("Test")
-                anchors.leftMargin: 0
-                anchors.rightMargin: 0
-                onClicked: testCommand()
-            }
             }
 
             Button {
@@ -245,14 +237,10 @@ Item {
                     rootwindow.vdemandSliderChanged(vdemand.value)
                 }
             }
-
-
         }
     }
 
-    // Aktuális értékek elemcsoportja
 
-    // Oszlopba rendezett további elemek
     TabView{
         objectName: "graphTabView"
         height: 486
@@ -277,15 +265,9 @@ Item {
             ColumnLayout {
                 width: 351
                 anchors.bottomMargin: 259
-                // Felfelé, lefelé és balra a szülő széléhez illeszkedik. Jobbra nem, mert
-                //  széthúzni felesleges őket.
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
-                // Sima szövegek (Text elemek), amiknek az értéke egy a C++ oldalon definiált currentState
-                //  értékétől függ. (Ha az értéke null, akkor "?" jelenik meg.)
-                // A currentState-et a MainWindowsEventHandling::historyChanged metódus regisztrálja be, hogy
-                //  látható legyen a QML oldalról is. (Hivatkozás a RobotStateHistory::currentState-re.)
                 Text { text: " Current: " + curr.data.toFixed(2) + " A" ;font.bold: true ;font.pointSize: 14}
                 Text { text: " Speed: " + (speed.data*3.6).toFixed(2) + " km/h" ;font.bold: true ;font.pointSize: 14}
                 Text { text: " Torque: " + torq.data.toFixed(2) + " Nm"  ;font.bold: true ;font.pointSize: 14}
@@ -294,7 +276,6 @@ Item {
                 Text { text: " Charge left: " + capac.data.toFixed(2) + " Ah"  ;font.bold: true ;font.pointSize: 14 }
             }
         }
-
 
         Tab {
             objectName: "graphTab"
@@ -307,7 +288,6 @@ Item {
                     objectName: "customPlot"
                     id: customPlot
                     anchors.fill: parent
-
                     Component.onCompleted: initCustomPlot()
 
                 }
@@ -317,13 +297,11 @@ Item {
         Tab {
             id: battTab
             title: "Battery"
-
             BatteryView{
                 id: battery
                 anchors.fill: parent
             }
         }
-
 
 
         style: TabViewStyle {
@@ -343,22 +321,11 @@ Item {
             }
             frame: Rectangle { color: "white" }
         }
-
-
-
-
     }
 
-
-
-    // Delegate: this is the appearance of a list item
-    // A későbbi history listának szüksége van egy delegate-re. Minden lista elem ennek a komponensnek egy
-    //  példánya lesz.
     Component {
-        // ID, hogy tudjuk a listánál hivatkozni erre, mint a lista delegatejére.
         id: stateDelegate
         Row {
-            // Itt a model az, ami a list egyik eleme. (Bármi is legyen majd az.)
             Text { text: model.statusName }
             Text { text: " X: " + model.x.toFixed(3) }
             Text { text: " V: " + model.v.toFixed(3) }
@@ -366,53 +333,35 @@ Item {
         }
     }
 
-    // Az állapot lista és a grafikon GroupBoxa.
     GroupBox {
         id: logWindow
         title: qsTr("Event Log")
-        // Oldalra és lefelé kitölti a szülőt.
         anchors.right: parent.right
         anchors.rightMargin: 0
         anchors.left: parent.left
         anchors.leftMargin: 0
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
-        // Felfelé a commandsGB és currentValuesGB GroupBoxok közül ahhoz igazodik, aminek lejjebb van az alja.
         anchors.top: commandsGB.bottom
         anchors.topMargin: 0
 
-
-        // Sorban egymás mellett van a lista és a grafikon
         RowLayout {
-            // Kitölti a szülőt és nem hagy helyet az elemek között.
             anchors.fill: parent
             spacing: 0
-            // A history lista egy scrollozható elemen belül van.
+
             ScrollView {
-                // A scrollohzató elem igazítása a szölő RowLayouthoz.
-                // Itt a ScrollViewon belül adjuk meg, hogy a RowLayoutban
-                //  mik legyenek a rá (ScrollViewra) vonatkozó méret beállítások,
-                //  mert ezeket a RowLayout kezeli ebben az esetben.
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.minimumWidth: 100
                 Layout.minimumHeight: 150
                 Layout.preferredHeight: 150
 
-
-                // Itt jön a tényleges lista.
                 ListView {
                     id: stateHistoryList
                     anchors.rightMargin: 10
                     anchors.bottomMargin: 0
                     anchors.leftMargin: 10
                     anchors.topMargin: 0
-                    // A model az, ahonnan az adatokat vesszük.
-                    // A historyModel változót a MainWindowsEventHandling::historyChanged metódus teszi
-                    //  elérhetővé a QML oldalon is.
-                    //  Típusa QList<QObject*>, a tárolt pointerek valójában RobotState-ekre mutatnak.
-
-                    //model: historyModel
 
                     ListView {
                         id: eventLog
@@ -454,14 +403,8 @@ Item {
                             incrementCurrentIndex();
                         }
                     }
-
                 }
             }
-
-            // A HistoryGraph példányosítása, melyet külön fájlban definiáltunk.
-            //  (A rendszer név alapján találja meg a fájlt.)
-
-
         }
     }
 }

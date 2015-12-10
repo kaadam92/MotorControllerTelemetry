@@ -15,7 +15,7 @@
 #include "Communication/CommunicationTcpSocketClient.h"
 #include "Communication/CommunicationSerialPort.h"
 #include "windowseventhandler.h"
-#include "qcustomplot.h"
+#include "QCustomPlot/qcustomplot.h"
 #include "customplotitem.h"
 #include "DataLogger.h"
 #include "QMLData.h"
@@ -24,6 +24,8 @@
  * @brief Alkalmazás osztály. A main() példányosítja és indítja el.
  *
  * A konstruktor elvégzi az alapvető példányosításokat és a signalok összekapcsolását.
+ *
+ *
  */
 class Application : public QApplication
 {
@@ -49,7 +51,14 @@ private:
 
     QTimer checkTabTimer, dataUpdateTimer;
 
-
+/**
+ * @brief Adatküldés az eszköz felé
+ * @details Ezen függvény hívásásval megfelelő ID-jú és tartalmú üzenetet továbbíthaunk
+ * az eszköz felé
+ * 
+ * @param code Az üzenet azonostására szolgáló ID
+ * @param value Az üzenet tartalma.
+ */
     void sendData(quint16 code, double value);
     void initQML();
     void makeConnections();

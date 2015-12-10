@@ -10,11 +10,20 @@
 #include <QVector>
 #include <QDateTime>
 #include <QTimer>
-#include "qcustomplot.h"
+#include "QCustomPlot/qcustomplot.h"
 
 class QQuickItem;
 class QQmlContext;
 class QQmlApplicationEngine;
+
+
+/**
+ * @brief Az ablak eseménykezelőit megvalósító osztály.
+ *
+ * Ebbe az osztályba vannak ketötve a QML felől érkező signalok, illetve szintén
+ * ez az osztály felelős a digaram megfelelő időközönkénti újrarajzolásáért.
+ *
+ */
 
 class WindowsEventHandler : public QObject
 {
@@ -27,12 +36,31 @@ public:
 
     //void ConnectQmlSignals(QObject *rootObject);
 
-    /** A plot pointert lehet beállítani vele.*/
+    /**
+     * @brief Beállítja a grafikonra mutató pointert.
+     * @details A QML-ben példányosított QCustomPlot-ra mutató pointert állítja be az osztályon belül.
+     * Azét van rá szükség, mert az Application osztály hozza létre a QML contextet, de a pointerre itt kell
+     * 
+     * @param ptr A QCustomPlotItemre mutató pointer
+     */
     void setPlotPtr(QCustomPlot* ptr){plotPtr = ptr;}
 
+    /**
+     * @brief Beállítja az UI főablakára mutató pointert.
+     * @details A QML-ben példányosított UI főablakra mutató pointert állítja be az osztályon belül.
+     * Azét van rá szükség, mert az Application osztály hozza létre a QML contextet, de a pointerre itt kell
+     * 
+     * @param ptr Az UI főablakára mutató pointer
+     */
     void setMainWindowPtr(QObject* ptr);
 
-    /** Az ablak aljában található logra ír */
+    /**
+     * @brief Az UI-on található log felületre ír ki egy üzenetet.
+     * @details A szöveg tetszőleges string, a szín segítségével pedig egyes kategóriákat lehet megkülönbözetni (pl. piros ERROR)
+     * 
+     * @param text Az üzenet szövege
+     * @param color Az üzenet jelölő színe
+     */
     void logPost(QVariant text, QVariant color);
 
 signals:
