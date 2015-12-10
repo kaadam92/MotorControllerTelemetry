@@ -5,7 +5,7 @@
  */
 
 const double checkTabTimerInterval = 1000;
-const double dataUpdateTimerInterval = 1000;
+const double dataUpdateTimerInterval = 500;
 
 Application::Application(int argc, char *argv[])
     : QApplication(argc, argv),
@@ -191,12 +191,15 @@ void Application::connectedToServer()
 void Application::connectToServer()
 {
     /** Kommunikáció indítása, kapcsolódás.*/
-    tcpClient.connect(QString("localhost"),4444);
-    serialPort.connect();
+    if(!tcpClient.isConnected())
+        tcpClient.connect(QString("localhost"),4444);
+    if(!serialPort.isConnected())
+        serialPort.connect();
 }
 
 void Application::hvenCommand()
 {
+    sendData(dataParser.getCode("selftest"), 10);
     sendData(dataParser.getCode("state"), 10);
 
 }

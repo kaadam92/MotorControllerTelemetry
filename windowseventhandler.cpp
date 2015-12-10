@@ -40,7 +40,25 @@ void WindowsEventHandler::logPost(QVariant text, QVariant color){
 
 void WindowsEventHandler::stringMessage(QSharedPointer<QString> strPtr)
 {
-    logPost(*strPtr, "blue");
+    if(strPtr->contains("selftest", Qt::CaseInsensitive))
+    {
+        if(strPtr->contains("ok", Qt::CaseInsensitive))
+        {
+            logPost(*strPtr, "green");
+        }
+        else if(strPtr->contains("fault", Qt::CaseInsensitive))
+        {
+            logPost(*strPtr, "red");
+        }
+        else
+        {
+            logPost(*strPtr, "orange");
+        }
+    }
+    else
+    {
+        logPost(*strPtr, "blue");
+    }
     strPtr.clear();
 }
  void WindowsEventHandler::historyChanged()
@@ -63,17 +81,19 @@ void WindowsEventHandler::connectCommand()
 void WindowsEventHandler::hvEnableCommand()
 {
     qDebug() << "HV enable gomb megnyomva.";
+    replotTimer.start();
 }
 
 void WindowsEventHandler::driveEnableCommand()
 {
     qDebug() << "Drive Enable gomb megnyomva.";
+    replotTimer.start();
 }
 
 void WindowsEventHandler::stopCommand()
 {
     qDebug() << "Stop gomb megnyomva.";
-    replotTimer.stop();
+    //replotTimer.stop();
 }
 
 void WindowsEventHandler::replot()

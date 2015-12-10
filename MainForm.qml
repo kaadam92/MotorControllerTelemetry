@@ -18,7 +18,6 @@ Item {
             hvenBtn.gradcolor2 = (hven.data > 1) ? "#0e0" : "#eee";
             hvenBtn.gradcolor3 = (hven.data > 1) ? "#0a0" : "#aaa";
             hvenBtn.gradcolor4 = (hven.data > 1) ? "#0c0" : "#ccc";
-            console.log("HVEN" + hven.data)
         }
     }
     Connections
@@ -32,7 +31,6 @@ Item {
             drenBtn.gradcolor2 = (dren.data > 1) ? "#0e0" : "#eee";
             drenBtn.gradcolor3 = (dren.data > 1) ? "#0a0" : "#aaa";
             drenBtn.gradcolor4 = (dren.data > 1) ? "#0c0" : "#ccc";
-            console.log("DREN" + dren.data)
         }
     }
     Connections
@@ -46,7 +44,6 @@ Item {
             stopBtn.gradcolor2 = (stop.data > 1) ? "#0e0" : "#f66";
             stopBtn.gradcolor3 = (stop.data > 1) ? "#0a0" : "#f66";
             stopBtn.gradcolor4 = (stop.data > 1) ? "#0c0" : "#e55";
-            console.log("STOP" + stop.data)
         }
     }
 
