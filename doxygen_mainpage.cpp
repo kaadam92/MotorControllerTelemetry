@@ -10,11 +10,9 @@
  *        - Az autóhoz a gombok segítségével lehet csatlkozni, illvet üzemkész állapotbe helyezni azt. A gombok alatt található slider
  *            segítségével sebesség alapjelet adhatunk a szimulázornak.
  *        - Az alkalmazás fő eleme a felül, jobb oldalt található megjelenítő rész. Itt három nézetet közül lehet váalsztani:
- *        
- *            -- A pillanatnyi paramétereket lehet megjeleníteni
- *            -- Grafikonon követhetjük a paraméterek alakulásást. (A sebesség alapjelét és a valós sebességét)
- *            -- A 12 cellás akkumlátor egyes cellefeszültségeinek alakulását követhetjük nyomon
- *            
+ *          - A pillanatnyi paramétereket lehet megjeleníteni
+ *          - Grafikonon követhetjük a paraméterek alakulásást. (A sebesség alapjelét és a valós sebességét)
+ *          - A 12 cellás akkumlátor egyes cellefeszültségeinek alakulását követhetjük nyomon
  *        - Az alsó harmadban külnböző log üzeneteket olvashatunk.
  *
  *
@@ -37,5 +35,20 @@
  * 		- Kommunikációval kapcsoaltos osztályok
  * 		- Adatfeldolgozással kapcsolatos osztályok
  * 		- Megjelenítéssel, grafikus felület menedzselésével kapcsolatos osztályok.
+ * 		
+ * @section git Verziókövetés
+ * 
+ * Print screen a commit logunkról:
+ * 
+ * ![](git.png)
+ * 
+ * A fejlesztés során 4 branchat használtunk folyamatosan:
+ * 		- **Master branch:** a legfrissebb működőképes változat (a kályha, ahova vissza lehet térni)
+ * 		- **Develop:** fejlesztési verziók
+ * 		- **Sandbox:** A saját játszóterünk, ahol azt csinálunk amit akarunk, és nem lesz belőle baj
+ * 		
+ * [Az alkalmazás GitHub repója](https://github.com/kaadam92/MotorControllerTelemetry)
+ * 
+ * [A szimulátor GitHub repója](https://github.com/koincidencia/MotorControllerSimulator)		
  *
  */

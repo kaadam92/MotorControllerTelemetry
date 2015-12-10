@@ -5,6 +5,5 @@
         <file>BatteryView.qml</file>
         <file>BatteryBar.qml</file>
         <file>CurrentDataView.qml</file>
-        <file>EventLogView.qml</file>
     </qresource>
 </RCC>
