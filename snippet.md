@@ -137,11 +137,11 @@ A fejlesztés utolsó fázisának nevezhető az ún. deployment, ami tulajdonké
 
 Ez a módszer tűnik a legegyszerűbb megoldásnak: a release módon fordított alkalmazásunkhoz tartozó .exe fájlt kimásoljuk egy mappába és mellette elhelyezzük a szükséges .dll könyvtárakat. A kérdés csak az, hogy honnan lehet megtudni a szükséges fájlok listáját.
 
-Első megközelítésben megpróbáljuk lefuttatni a programunkat a célrendszeren és a windows hibaüzenetek alapján levadásszuk a hiányolt .dll fájlt. Általában a "--QT DIR--\Qt5.5.1\5.5\mingw492_32\bin" mappában találhatóak. Ez a folyamat időigényes lehet, ha sok fájlt kell megtalálni, illetve a windows hibaüzenetek nem minden esetben írják ki a hiányzó fájl nevét, ekkor zsákutszába kerülünk, nem tudjuk mire lenne szükség.
+Első megközelítésben megpróbáljuk lefuttatni a programunkat a célrendszeren és a windows hibaüzenetek alapján levadásszuk a hiányolt .dll fájlt. Általában a _--QT DIR--\Qt5.5.1\5.5\mingw492_32\bin_ mappában találhatóak. Ez a folyamat időigényes lehet, ha sok fájlt kell megtalálni, illetve a windows hibaüzenetek nem minden esetben írják ki a hiányzó fájl nevét, ekkor zsákutszába kerülünk, nem tudjuk mire lenne szükség.
 
-Erre a problémára a Qt telepítésekor a számítógépünkre került egy hasznos program, amit a "--QT DIR--\Qt5.5.1\5.5\mingw492_32\bin\windeployqt.exe" helyen érhetünk el (angol leírás: http://doc.qt.io/qt-5/windows-deployment.html). 
+Erre a problémára a Qt telepítésekor a számítógépünkre került egy hasznos program, amit a _--QT DIR--\Qt5.5.1\5.5\mingw492_32\bin\windeployqt.exe_ helyen érhetünk el (angol leírás: http://doc.qt.io/qt-5/windows-deployment.html). 
 
-Windows parancssorból vagy az újabb powershellből futtatható ez a kis program. A windeployqt.exe -? parancsal kérhetjük le a különféle paramétereket. A legegyszerűbb úgy eljráni, hogy létrehozunk egy mappát valahol a meghajtónkon, amibe bemásoljuk a release módon fordított .exe fájlunkat. Ez most legyen "E:\Dinamukus" a példa kedvért. Ha a szoftver QML környezetet is használ, akkor szükségünk lesz a QML fájlokat tartalmazó mappa elérési útjára, ez most legyen "E:\GIT\Program\QML" mappa.
+Windows parancssorból vagy az újabb powershellből futtatható ez a kis program. A _windeployqt.exe -?_ parancsal kérhetjük le a különféle paramétereket. A legegyszerűbb úgy eljráni, hogy létrehozunk egy mappát valahol a meghajtónkon, amibe bemásoljuk a release módon fordított .exe fájlunkat. Ez most legyen _E:\Dinamukus_ a példa kedvért. Ha a szoftver QML környezetet is használ, akkor szükségünk lesz a QML fájlokat tartalmazó mappa elérési útjára, ez most legyen _E:\GIT\Program\QML_ mappa.
 
 A következő utasítást végrehajtva a .exe fájlunk mellett megjelennek a szükséges .dll fájlok:
 ```
@@ -161,13 +161,13 @@ A fent linkelt oldalon van egy hasznos powershell szkript, amely letöltis és l
 
 A letöltés után futtassuk a szkriptet. A __fordítás néhány óráig eltart__, nekem egy i7-es gépen, SSD meghajtóval kb. 3 óra hosszan tartott a folyamat.
 
-### Második lépés: Qt Creator beállítása
+#### Második lépés: Qt Creator beállítása
 A fordítás után a fejlesztői környezetnek is tudni kell, hogy statikus fordítást szeretnénk.
 A Qt Creatorban __Tools__ -> __Options__. A jobb oldali menüben __Build & Run__ -> __Qt Versions__ fül. Itt kattintsunk az __Add__ gombra. A felugró ablakban tallózuk ki az újonnan fordított statikus Qt könyvtárban található __qmake.exe__ fájlt, ez alapértelmezetetten a _C:\Qt\Static\5.5.1\bin_ könyvtárban található. Természetesen a verziószám változásával az _5.5.1_ rész változhat.
 A _Manual_ megjelölés alatt létrejövő új bejegyzést nevezzük el valami többet mondó néven, pl. _Qt 5.5.1 MinGW STATIC 32bit_.
 Ezután kattintsunk a __Kit__ fülre, majd az __Add__ gombra. A _Qt version_ sornál válasszuk ki az imént létrehozott _Qt 5.5.1 MinGW STATIC 32bit_ opciót. Itt is érdemes értelmes nevet adni az új bejegyzésnek. A többi beállításnak alapértelmezetten jónak kell lennie, tehát az __OK__ gomb megnyomásával készen is vagyunk.
 
-### Harmadik lépés: Projekt beállítása
+#### Harmadik lépés: Projekt beállítása
 Nyissuk meg a fordítani kívánt projektünket. Ezután a Qt Creatorban a jobb oldali oszlopban a __Projects__ fülön bal felső sarokban kattintsunk az __Add Kit__ feliratú gombra. A lenyíló menüből válaszuk a statikus verziót, amit az imént hoztunk létre. A felső sorban, az Add Kit gomb mellett megjelenik az új fordítási lehetőség,a melyre rákattintva elérhetjük a beállításait. Érdemes lehet a _Build directory_ bejegyzést módosítani, ide fogja fordítani a programunkat.
 Mindezek után a Qt Creator bal alsó sarkában a fordítás céljánál kiválasztjuk a statikus release módot és a programunk fordítás után már bármely más windows rendszeren használható lesz dll fájlok nélkül. 
 
