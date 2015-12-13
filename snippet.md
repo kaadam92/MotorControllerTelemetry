@@ -159,13 +159,19 @@ A Qt wiki oldalán találtam megoldást (https://wiki.qt.io/Building_a_static_Qt
 #### Első lépés: statikus Qt fordítása
 A fent linkelt oldalon van egy hasznos powershell szkript, amely letöltis és lefordítja a statikus Qt környezetet, amelyel később elő tudjuk állítani a statikusan fordított szoftvereinket. [link a szkripthez](https://sourceforge.net/p/qtlmovie/code/ci/master/tree/build/windows-build-qt-static.ps1?format=raw)
 
-A letöltés után futtassuk a szkriptet. A __fordítás néhány óráig eltart__, nekem egy i7-es gépen, SSD meghajtóval kb. 3 órá hosszat tartott a folyamat.
+A letöltés után futtassuk a szkriptet. A __fordítás néhány óráig eltart__, nekem egy i7-es gépen, SSD meghajtóval kb. 3 óra hosszan tartott a folyamat.
 
 ### Második lépés: Qt Creator beállítása
 A fordítás után a fejlesztői környezetnek is tudni kell, hogy statikus fordítást szeretnénk.
-A Qt Creatorban __Tools__ -> __Options__. A jobb oldali menüben __Build & Run__ -> __Qt Versions__ fül. Itt kattintsunk az __Add__ gombra. A felugró ablakban tallózuk ki az újonnan fordított statikus Qt könyvtárban található __qmake.exe_ fájlt, ez alapértelmezetetten a _C:\Qt\Static\5.5.1\bin_ könyvtárban található. Természetesen a verziószám változásával az _5.5.1_ rész változhat.
+A Qt Creatorban __Tools__ -> __Options__. A jobb oldali menüben __Build & Run__ -> __Qt Versions__ fül. Itt kattintsunk az __Add__ gombra. A felugró ablakban tallózuk ki az újonnan fordított statikus Qt könyvtárban található __qmake.exe__ fájlt, ez alapértelmezetetten a _C:\Qt\Static\5.5.1\bin_ könyvtárban található. Természetesen a verziószám változásával az _5.5.1_ rész változhat.
 A _Manual_ megjelölés alatt létrejövő új bejegyzést nevezzük el valami többet mondó néven, pl. _Qt 5.5.1 MinGW STATIC 32bit_.
-Ezután kattintsunk a __Kit__ fülre, majd az __Add__ gombra. A _Qt version_ sornál válasszuk ki az imént létrehozott _Qt 5.5.1 MinGW STATIC 32bit_ opciót. A többi beállításnak alapértelmezetten jónak kell lennie, tehát az __OK__ gomb megnyomásával készen is vagyunk.
+Ezután kattintsunk a __Kit__ fülre, majd az __Add__ gombra. A _Qt version_ sornál válasszuk ki az imént létrehozott _Qt 5.5.1 MinGW STATIC 32bit_ opciót. Itt is érdemes értelmes nevet adni az új bejegyzésnek. A többi beállításnak alapértelmezetten jónak kell lennie, tehát az __OK__ gomb megnyomásával készen is vagyunk.
+
+### Harmadik lépés: Projekt beállítása
+Nyissuk meg a fordítani kívánt projektünket. Ezután a Qt Creatorban a jobb oldali oszlopban a __Projects__ fülön bal felső sarokban kattintsunk az __Add Kit__ feliratú gombra. A lenyíló menüből válaszuk a statikus verziót, amit az imént hoztunk létre. A felső sorban, az Add Kit gomb mellett megjelenik az új fordítási lehetőség,a melyre rákattintva elérhetjük a beállításait. Érdemes lehet a _Build directory_ bejegyzést módosítani, ide fogja fordítani a programunkat.
+Mindezek után a Qt Creator bal alsó sarkában a fordítás céljánál kiválasztjuk a statikus release módot és a programunk fordítás után már bármely más windows rendszeren használható lesz dll fájlok nélkül. 
+
+Érdemes megjegyezni, hogy a debug módban fordított statikus programok mérete __több 100 MB__ méretű lehet, mivel a debug során nagyon sok felesleges kódsor is fordításra kerül. Érdemes ilyenkor csak release módban fordítani.
 
 
 
