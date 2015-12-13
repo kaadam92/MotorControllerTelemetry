@@ -32,6 +32,8 @@
  * A szöveges üzeneteket QSharedPointer-eken kersztül egy várakozási sor tárolja, illetve üzenet érkezésekor a newString()
  * jel kerül kibocsájtásra, mely szintén egy QSharedPointer-en keresztül adja át az üzenetet.
  * Ugyanígy tárolódnak a fogadott adatok is. A tárolási mód megkönnyíti a fájlba mentési folymatot, így biztosan nem veszik el fogadott adat.
+ *
+ * ![](data_seq.png)
 */
 class DataParser : public QObject
 {

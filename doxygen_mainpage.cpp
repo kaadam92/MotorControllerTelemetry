@@ -47,6 +47,11 @@
  * 		- **Develop:** fejlesztési verziók
  * 		- **Sandbox:** A saját játszóterünk, ahol azt csinálunk amit akarunk, és nem lesz belőle baj
  * 		
+ * 		
+ * @section link Kapcsolódó külső linkek
+ * 
+ * [A működést demonstráló videó](https://drive.google.com/folderview?id=0B2VmyvNMfKRrY3NmNm5hR0VVOFE&usp=sharing)	
+ * 								
  * [Az alkalmazás GitHub repója](https://github.com/kaadam92/MotorControllerTelemetry)
  * 
  * [A szimulátor GitHub repója](https://github.com/koincidencia/MotorControllerSimulator)		
