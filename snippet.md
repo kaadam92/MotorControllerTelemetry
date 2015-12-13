@@ -130,4 +130,20 @@ Ez meglehetősen hosszú, ráadásul saját magunknak megírni nem is feltétlen
 ```
 
 Ebben a kódrészletben használjuk a Qt által biztosított findChild függvényt, majd átadjuk az EventHandler osztályunknak a pointert az ablakra, hogy el tudjuk érni innen is a tartalmát.
+## A szoftver futtatása más számítógépen
+A fejlesztés utolsó fázisának nevezhető az ún. deployment, ami tulajdonképpen az elkészült szoftver használatra bocsájtása. Windows rendszeren ez annyit jelent, hogy a felhasználó számára biztosítjuk a futtatható bináris állományt (.exe) és az esetleges dinamikusan linkelt könyvtárakat (.dll).
+
+### Dinamikus linkelés
+
+Ez a módszer tűnik a legegyszerűbb megoldásnak: a release módon fordított alkalmazásunkhoz tartozó .exe fájlt kimásoljuk egy mappába és mellette elhelyezzük a szükséges .dll könyvtárakat. A kérdés csak az, hogy honnan lehet megtudni a szükséges fájlok listáját.
+
+Első megközelítésben megpróbáljuk lefuttatni a programunkat a célrendszeren és a windows hibaüzenetek alapján levadásszuk a hiányolt .dll fájlt. Általában a "--QT DIR--\Qt5.5.1\5.5\mingw492_32\bin" mappában találhatóak. Ez a folyamat időigényes lehet, ha sok fájlt kell megtalálni, illetve a windows hibaüzenetek nem minden esetben írják ki a hiányzó fájl nevét, ekkor zsákutszába kerülünk, nem tudjuk mire lenne szükség.
+
+
+
+### Statikus linkelés
+
+
+Qt szoftverek esetén a felhasznált modulokt mennyiségétől függően viszonylag sok dll fájl szükséges a működéshez, ezért kíváncsiak voltunk, hogy van-e lehetőség egyetlen .exe fájlba, statikusan linkelni a könyvtárakat.
+
 
