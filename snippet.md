@@ -139,11 +139,23 @@ Ez a módszer tűnik a legegyszerűbb megoldásnak: a release módon fordított 
 
 Első megközelítésben megpróbáljuk lefuttatni a programunkat a célrendszeren és a windows hibaüzenetek alapján levadásszuk a hiányolt .dll fájlt. Általában a "--QT DIR--\Qt5.5.1\5.5\mingw492_32\bin" mappában találhatóak. Ez a folyamat időigényes lehet, ha sok fájlt kell megtalálni, illetve a windows hibaüzenetek nem minden esetben írják ki a hiányzó fájl nevét, ekkor zsákutszába kerülünk, nem tudjuk mire lenne szükség.
 
+Erre a problémára a Qt telepítésekor a számítógépünkre került egy hasznos program, amit a "--QT DIR--\Qt5.5.1\5.5\mingw492_32\bin\windeployqt.exe" helyen érhetünk el (angol leírás: http://doc.qt.io/qt-5/windows-deployment.html). 
 
+Windows parancssorból vagy az újabb powershellből futtatható ez a kis program. A windeployqt.exe -? parancsal kérhetjük le a különféle paramétereket. A legegyszerűbb úgy eljráni, hogy létrehozunk egy mappát valahol a meghajtónkon, amibe bemásoljuk a release módon fordított .exe fájlunkat. Ez most legyen "E:\Dinamukus" a példa kedvért. Ha a szoftver QML környezetet is használ, akkor szükségünk lesz a QML fájlokat tartalmazó mappa elérési útjára, ez most legyen "E:\GIT\Program\QML" mappa.
+
+A következő utasítást végrehajtva a .exe fájlunk mellett megjelennek a szükséges .dll fájlok:
+```
+windeployqt.exe --release --qmldir E:\GIT\Program\QML E:\Dinamikus
+```
+
+Elvileg ezután más számítógépeken is futtatható lesz a programunk. Én sajnos ezután is kaptam két hibaüzenetet indításkor, ugyanakkor a program elindult és helyesen működött. A fejlesztés Win10 alatt történt, Win7 és Win8.1 rendszereken jelentkezett a két nem várt hibaüzenet.
 
 ### Statikus linkelés
 
+Qt szoftverek esetén a felhasznált modulokt mennyiségétől függően viszonylag sok dll fájl szükséges a működéshez, ezért kíváncsiak voltunk, hogy van-e lehetőség egyetlen .exe fájlba, statikusan linkelni a könyvtárakat. 
 
-Qt szoftverek esetén a felhasznált modulokt mennyiségétől függően viszonylag sok dll fájl szükséges a működéshez, ezért kíváncsiak voltunk, hogy van-e lehetőség egyetlen .exe fájlba, statikusan linkelni a könyvtárakat.
+A Qt wiki oldalán találtam megoldást (https://wiki.qt.io/Building_a_static_Qt_for_Windows_using_MinGW), ugyanakkor így csak olyan projekteket lehet lefuttatni, amelyek __nem használnak QML környezetet__! A tapasztalat az volt, hogy futtatáskor a program elszállt, nem várt hibával. Miután a fordításkor a .pro Qt projekt fájlban hozzáadtam a CONFIG += consol beállítást (ezzel konzolt is fordítottam a programba) a hibajelzések megjelentek a konzolon, melyek szerint a QML könyvtárak hiányoztak.
+
+
 
 
