@@ -1,16 +1,79 @@
-### A tapasztalatokat összefoglaló snippet házi beadáshoz
+# A tapasztalatokat összefoglaló snippet házi beadáshoz
 
 A fejlesztés során több akadályba, nehézségbe és furcsaságba is ütköztünk, ezeket hivatott összefoglalni ez a kis leírás.
 
 ## A Qt Creator sajátosságai
 
-## A QML furcsaságai egy villamosmérnök számára
+A Qt Creator bár egy elsőre igen purítán felületnek tűnik, egy meglehetősen jól átgondolt felületet ad a fejlesztéshez. Néhány anomália azonban itt is akad, bár ezek lehet nem általános jellegőek:
 
-Az itt leíyrtak egy része könnyen adódhat abból, hogy nem rendelkezünk elegendő tapsztalattal sem C++-ban, de JavaScriptben végképp nem, így
-néhány dolgot elsőre nehezen fogadott be a tudatunk.
+  * Amikor furcsa fordítási hiábt kapunk, nem értjük, ohgy miről szól, és rá kattintva memóriatartalom nyilik meg, akkor a megoldás jó eséllyel a kézi *qmake* futtatás lesz a megoldás
+  * A QML fájlok nem mentődnek el automatikusan build-kor, erre jó eséllyel van beállítás, de elsőre furcsa lehet.
+  * A QML-ben eszközölt módosítások nem mindig jelennek meg fordítás után az UI-on, ellenben ha a grafikus szerkesztővel egy kicsit bizgetünk a felületen, akkor már igen.
+  * Ha több példányban futtatjuk a Qt Creatort, akkor csak az egyik ablak használhatja a debug konzolt
 
-# QML-ben automatikusan generálódó függvénynevek
+### QML-ben automatikusan generálódó függvénynevek
 
-A
+Amikor QML-ben létrehozunk egy modult, és azt példányosítjuk, akkor a modul signaljai megjelennek a felső rétegen is, pl a "valami" nevű signalból a példányosítás helyén lesz "onValami" nevű függvényhívás. Konrét példát találunk a SimpleTelemetryVisualiser-ben.
 
-## 
+```javascript
+    signal resetCommand;
+    signal accelerateCommand;
+    signal stopCommand;
+```
+
+Ezek a signalok jönnek létre a MainForm modlban, melyet a main.qml fájlban példányosítunk.
+
+```javascript
+    MainForm {
+        id: mainFormControl
+        anchors.fill: parent
+
+        // Az eseménykezelőkben tovább hívjuk az itteni signalokat a C++ oldal felé.
+        onResetCommand: {
+            resetCpp();
+        }
+        onAccelerateCommand: {
+            accelerateCommandCpp();
+        }
+        onStopCommand: {
+            stopCommandCpp();
+        }
+    }
+}
+```
+
+Itt pedig láthatóak a létrejövő függvényhívások a kész modulban. Érdekesség, hogy a modulban található signal első betűje automatikusan naggyá válzotik a függvényeknél, a többi karakter viszont case-sensitive, azaz a konkrét példát szemlélve, a *stopCommand* és a StopCommand* között nincs különbség, a *stopCommand* és a *stopcommand* viszont két különböző signal. Az, hogy ezek a függvénynevek, hogyan jönnek létre a signalokból, a szerzők előtt nem ismert, lézetésüket azonban tényként elfogadják.
+
+### QML vs .ui
+
+A Qt két gyökeresen eltérő módszerrel segíti grafikus felhasználói felületek gyors összeállítását. Az egyik az áltlaunk is tanult QML, mely javascript szerű leírással némi funkcionalitás megvalósításának is teret enged. Ez sok dolog elegáns megvalósítását biztosítja, hátrány azonban, hogy igen kevés előre gyártott elemből tudunk építkezni, nekünk kell megírni sok mindent. (Erre abszolút elemi példa, hogy nincsen pl. kör QML-ben, a megoldás az, hogy négyszöget csinál az amber, melynek a sarkai oldalhoszz/2 sugárral lekerekít.) Természetesen hatalmas potenciál van ebben a koncepcióban, azonban nagyon sok gyakorlást és rutint igényel, hogy az ember el tudja dönteni megfelelő módon, hogy mi az, amit QML-ben és mi az, amit C++-ban érdemes megvalósítani. A mi házi feladatunkban is valószínűleg sok olyan megoldás van, ami egy rutinos Qt programozó számára nevetségesen undorító, összetákolt munka, és tud rá sokkal elegánsabb és praktikusabb megoldást.
+
+Ezzel szemben a .ui egyszerű, xml alapú leírást biztosít, a messziről induló kezdő Qt felhsználó számára jobban átlátható, és nem ró a két oldal közti szeparációs terheket a felhasználóra. Sokkal több beépített elemből válogathatunk, ezekt ráadásul C++-ból is könnyebb elérni.
+
+Összegezve tehát azt mondanám, hogy nagyon jó a QML, de rutint igényel, ezzel szemben a *.ui* könnyebben átlátható első ránézésre , így kezdő felhsználók számára gyorsabb lehet.
+
+### Library-k használata QML-ben
+
+A legtöbb UI modul, melyet le tudunk tölteni internetről, a .ui stílusú leírást támogatja. Szerencsére ez nem akadályozza meg, hogy haszánljuk őket QML alatt is. Mi a [QCustomPlot](http://www.qcustomplot.com/index.php/introduction) nevű libraryt használtuk fel a a házi feladatunk során, amely nagyon igényes, lejes körő adatvizualizációt támogató csomag.
+
+Ahhoz, hogy fel tudujuk használni QML-ben létre kell hoznunk egy a modul menedzselő C++ objektumot. Ezek után ezt az objektumot be kell regisztálni QML objektumként.
+
+```c
+qmlRegisterType<CustomPlotItem>("CustomPlot", 1, 0, "CustomPlotItem");
+```
+
+Ha ezzel is kész vagyunk, akkor már csak példányosítani kell QML oldalon.
+
+```javascript
+  CustomPlotItem {
+      objectName: "customPlot"
+      id: customPlot
+      anchors.fill: parent
+      Component.onCompleted: initCustomPlot()
+      }
+```
+
+Innentől kezdve *customPlot* néven meg tudjuk találni C++ oldalról.
+
+### Hogyan érjünk el QML objektumokat C++ oldalról?
+
