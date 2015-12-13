@@ -154,7 +154,19 @@ Elvileg ezután más számítógépeken is futtatható lesz a programunk. Én sa
 
 Qt szoftverek esetén a felhasznált modulokt mennyiségétől függően viszonylag sok dll fájl szükséges a működéshez, ezért kíváncsiak voltunk, hogy van-e lehetőség egyetlen .exe fájlba, statikusan linkelni a könyvtárakat. 
 
-A Qt wiki oldalán találtam megoldást (https://wiki.qt.io/Building_a_static_Qt_for_Windows_using_MinGW), ugyanakkor így csak olyan projekteket lehet lefuttatni, amelyek __nem használnak QML környezetet__! A tapasztalat az volt, hogy futtatáskor a program elszállt, nem várt hibával. Miután a fordításkor a .pro Qt projekt fájlban hozzáadtam a CONFIG += consol beállítást (ezzel konzolt is fordítottam a programba) a hibajelzések megjelentek a konzolon, melyek szerint a QML könyvtárak hiányoztak.
+A Qt wiki oldalán találtam megoldást (https://wiki.qt.io/Building_a_static_Qt_for_Windows_using_MinGW), ugyanakkor így csak olyan projekteket lehet lefuttatni, amelyek __nem használnak QML környezetet__! A tapasztalat az volt, hogy futtatáskor a program elszállt, nem várt hibával. Miután a fordításkor a .pro Qt projekt fájlban hozzáadtam a CONFIG += consol beállítást (ezzel konzolt is fordítottam a programba) a hibajelzések megjelentek a konzolon, melyek szerint a QML könyvtárak hiányoztak. A következőkben egy rövid leírásban bemutatom, hogy miként jártam el a fordítás során.
+
+#### Első lépés: statikus Qt fordítása
+A fent linkelt oldalon van egy hasznos powershell szkript, amely letöltis és lefordítja a statikus Qt környezetet, amelyel később elő tudjuk állítani a statikusan fordított szoftvereinket. [link a szkripthez](https://sourceforge.net/p/qtlmovie/code/ci/master/tree/build/windows-build-qt-static.ps1?format=raw)
+
+A letöltés után futtassuk a szkriptet. A __fordítás néhány óráig eltart__, nekem egy i7-es gépen, SSD meghajtóval kb. 3 órá hosszat tartott a folyamat.
+
+### Második lépés: Qt Creator beállítása
+A fordítás után a fejlesztői környezetnek is tudni kell, hogy statikus fordítást szeretnénk.
+A Qt Creatorban __Tools__ -> __Options__. A jobb oldali menüben __Build & Run__ -> __Qt Versions__ fül. Itt kattintsunk az __Add__ gombra. A felugró ablakban tallózuk ki az újonnan fordított statikus Qt könyvtárban található __qmake.exe_ fájlt, ez alapértelmezetetten a _C:\Qt\Static\5.5.1\bin_ könyvtárban található. Természetesen a verziószám változásával az _5.5.1_ rész változhat.
+A _Manual_ megjelölés alatt létrejövő új bejegyzést nevezzük el valami többet mondó néven, pl. _Qt 5.5.1 MinGW STATIC 32bit_.
+Ezután kattintsunk a __Kit__ fülre, majd az __Add__ gombra. A _Qt version_ sornál válasszuk ki az imént létrehozott _Qt 5.5.1 MinGW STATIC 32bit_ opciót. A többi beállításnak alapértelmezetten jónak kell lennie, tehát az __OK__ gomb megnyomásával készen is vagyunk.
+
 
 
 
